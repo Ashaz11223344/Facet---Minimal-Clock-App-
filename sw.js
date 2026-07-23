@@ -1,4 +1,4 @@
-const CACHE_NAME = 'facet-clock-v11';
+const CACHE_NAME = 'facet-clock-v12';
 const ASSETS = [
   './',
   './index.html',

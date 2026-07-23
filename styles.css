@@ -424,6 +424,14 @@ body[data-morphism="brutalism"] .cs-option:hover {
   margin-bottom: 6px;
 }
 
+.palette-note {
+  font-size: 0.78rem;
+  color: var(--subtle);
+  line-height: 1.35;
+  margin-top: 6px;
+  max-width: 360px;
+}
+
 /* Mini Live Preview Clock Card */
 .custom-mini-preview {
   width: 100%;
@@ -527,7 +535,7 @@ body[data-morphism="brutalism"] .cs-option:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
 }
 

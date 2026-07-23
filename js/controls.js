@@ -1,7 +1,7 @@
 /**
  * FACET — Interaction, Custom Morphism Dropdowns, Custom Theme Creator & Rule Enforcer
  * Binds custom theme dropdowns, "Customize..." color palette modal with real-time mini live preview,
- * Background FX canvas selector, font switcher, desktop vs website rules, and keyboard shortcuts.
+ * Background FX canvas selector, font switcher, desktop vs website rules, and JSON file saving/loading.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const customColorModal = document.getElementById('custom-color-modal');
   const customModalClose = document.getElementById('custom-modal-close');
   const miniPreviewStage = document.getElementById('mini-preview-stage');
+  const palettePersistenceNote = document.getElementById('palette-persistence-note');
   const customBgColor = document.getElementById('custom-bg-color');
   const customBgHex = document.getElementById('custom-bg-hex');
   const customFgColor = document.getElementById('custom-fg-color');
@@ -43,7 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const customGlowColor = document.getElementById('custom-glow-color');
   const customGlowHex = document.getElementById('custom-glow-hex');
   const saveCustomColorBtn = document.getElementById('save-custom-color-btn');
+  const loadCustomColorBtn = document.getElementById('load-custom-color-btn');
   const resetCustomColorBtn = document.getElementById('reset-custom-color-btn');
+  const paletteFileInput = document.getElementById('palette-file-input');
 
   const infoModal = document.getElementById('info-modal');
   const infoClose = document.getElementById('info-close');
@@ -53,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let miniPreviewTimer = null;
   const IDLE_TIMEOUT_MS = 3500;
 
-  // Detect Desktop App environment vs Web App environment per Rule 1 & 2
+  // Detect Desktop App environment vs Web App environment per Rule 1 & 2 & Palette saving rule
   const isDesktopApp = !!(window.process && window.process.versions && window.process.versions.electron) || window.navigator.userAgent.toLowerCase().includes('electron');
 
   if (isDesktopApp) {
@@ -63,6 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
       bottomTrigger.setAttribute('title', 'Shortcuts (?)');
       bottomTrigger.setAttribute('aria-label', 'Keyboard Shortcuts');
     }
+    if (palettePersistenceNote) {
+      palettePersistenceNote.textContent = 'Save & load custom palette JSON files directly on your computer.';
+    }
+    if (saveCustomColorBtn) saveCustomColorBtn.textContent = 'Save Palette File';
+    if (loadCustomColorBtn) loadCustomColorBtn.classList.remove('hidden');
   } else {
     if (triggerPcIcon) triggerPcIcon.classList.remove('hidden');
     if (triggerInfoIcon) triggerInfoIcon.classList.add('hidden');
@@ -70,6 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
       bottomTrigger.setAttribute('title', 'Download for PC');
       bottomTrigger.setAttribute('aria-label', 'Download PC Application');
     }
+    if (palettePersistenceNote) {
+      palettePersistenceNote.textContent = 'Custom colors apply to active session. Closing website will reset palette.';
+    }
+    if (saveCustomColorBtn) saveCustomColorBtn.textContent = 'Apply Custom Palette';
+    if (loadCustomColorBtn) loadCustomColorBtn.classList.add('hidden');
   }
 
   // --------------------------------------------------------------------------
@@ -254,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
           optionsMenu.appendChild(li);
         });
 
-        // Add Customize... Special Option with SVG Icon (No Emojis)
+        // Add Customize... Special Option with SVG Icon
         const custLi = document.createElement('li');
         custLi.className = `cs-option customize-opt ${state.customPalette ? 'selected' : ''}`;
         custLi.dataset.action = 'customize';
@@ -473,8 +486,73 @@ document.addEventListener('DOMContentLoaded', () => {
     saveCustomColorBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       applyLiveColorPreview();
-      closeCustomColorModal();
-      showToast('Custom palette saved!');
+
+      if (isDesktopApp) {
+        // Desktop App: Export JSON Palette File
+        const state = window.ClockEngine.getState();
+        const paletteData = {
+          facet: 'palette',
+          version: '1.0',
+          bg: customBgColor.value,
+          fg: customFgColor.value,
+          accent: customAccentColor.value,
+          glow: customGlowColor.value,
+          bgFx: state.bgFx,
+          fontFamily: state.fontFamily
+        };
+        const blob = new Blob([JSON.stringify(paletteData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `facet-palette-${Date.now()}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        closeCustomColorModal();
+        showToast('Saved custom palette JSON file!');
+      } else {
+        closeCustomColorModal();
+        showToast('Custom palette applied for active session!');
+      }
+    });
+  }
+
+  if (loadCustomColorBtn && paletteFileInput) {
+    loadCustomColorBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      paletteFileInput.click();
+    });
+
+    paletteFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const data = JSON.parse(event.target.result);
+          if (data.bg && data.fg) {
+            if (customBgColor) { customBgColor.value = data.bg; customBgHex.value = data.bg; }
+            if (customFgColor) { customFgColor.value = data.fg; customFgHex.value = data.fg; }
+            if (customAccentColor) { customAccentColor.value = data.accent || data.fg; customAccentHex.value = data.accent || data.fg; }
+            if (customGlowColor) { customGlowColor.value = data.glow || '#000000'; customGlowHex.value = data.glow || '#000000'; }
+
+            if (data.bgFx) window.ClockEngine.setBgFx(data.bgFx);
+            if (data.fontFamily) window.ClockEngine.setFontFamily(data.fontFamily);
+
+            applyLiveColorPreview();
+            closeCustomColorModal();
+            showToast('Loaded custom palette file successfully!');
+          } else {
+            showToast('Invalid palette JSON file format.');
+          }
+        } catch (err) {
+          showToast('Failed to parse JSON palette file.');
+        }
+        paletteFileInput.value = '';
+      };
+      reader.readAsText(file);
     });
   }
 

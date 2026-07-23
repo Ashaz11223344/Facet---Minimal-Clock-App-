@@ -1,0 +1,5 @@
+- In desktop version there should be no install button, there should be '?' button for controls.
+- In website version there should be install button, there should be no '?' button for controls.
+- If command '(global)' or else '(for both') the specific update should be for both desktop (app) and website, but don't forget to read rule 1 and 2.
+- In website version: Custom color palette is temporary for active session. Inform user that closing website resets custom palette.
+- In desktop version: Custom color palette can be saved as a JSON palette file (via "Save Palette") and loaded anytime (via "Load Palette").

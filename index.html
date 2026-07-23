@@ -31,6 +31,9 @@
   <!-- Toast Notification Container -->
   <div id="toast-container" class="toast-container hidden" aria-live="polite"></div>
 
+  <!-- Hidden Palette File Input for Desktop App -->
+  <input type="file" id="palette-file-input" accept=".json" class="hidden" aria-hidden="true">
+
   <!-- Interactive Floating Toolbar -->
   <header id="toolbar" class="toolbar">
     <div class="toolbar-brand">FACET</div>
@@ -104,6 +107,7 @@
       <div class="custom-modal-header">
         <h2>Customize Theme Palette</h2>
         <div id="custom-morphism-note" class="theme-badge">Editing Claymorphism Analog — 3D styling active</div>
+        <p id="palette-persistence-note" class="palette-note">Custom colors apply to active session. Closing website will reset palette.</p>
       </div>
 
       <!-- Real-Time Mini Live Preview Clock Card -->
@@ -185,7 +189,8 @@
       </div>
 
       <div class="custom-modal-actions">
-        <button id="save-custom-color-btn" class="tb-btn primary-btn">Save Custom Palette</button>
+        <button id="save-custom-color-btn" class="tb-btn primary-btn">Apply Custom Palette</button>
+        <button id="load-custom-color-btn" class="tb-btn hidden">Load Palette File</button>
         <button id="reset-custom-color-btn" class="tb-btn">Reset to Preset</button>
       </div>
     </div>
