@@ -1,0 +1,36 @@
+# Node & Electron dependencies
+node_modules/
+package.json
+package-lock.json
+
+# Desktop Application executables & build folders
+dist/
+build_app/
+pc_app/
+pc_app_v2/
+installer/
+installer_dist/
+installer_build/
+setup_installer/
+dist_installer/
+setup_wizard_out/
+
+# Desktop process & icon conversion scripts
+main.js
+create-ico.js
+logo.ico
+*.exe
+*.blockmap
+
+# Screenshots & temporary visual artifacts
+*.png
+!logo.png
+!rounded-corners.png
+
+# GSD / IDE local internal state
+.agents/
+.claude/
+agent/
+skills-lock.json
+.DS_Store
+Thumbs.db

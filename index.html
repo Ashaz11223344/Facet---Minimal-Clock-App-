@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facet — Minimal Clock</title>
+  <meta name="description" content="An elegant, distraction-free minimal clock web application supporting 60 visual themes across glassmorphic, claymorphic, neumorphic, and brutalist styles.">
+  <meta name="theme-color" content="#0b0c0e">
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Google Fonts for Modern Morphism Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Nunito:wght@700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Animated Mesh Background Container -->
+  <div id="bg-mesh" class="bg-mesh" aria-hidden="true"></div>
+
+  <!-- CRT Scanline Overlay -->
+  <div id="crt-overlay" class="crt-overlay hidden" aria-hidden="true"></div>
+
+  <!-- Screen Reader Accessible Hidden Time Element -->
+  <time id="sr-time" class="sr-only" aria-live="polite"></time>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container hidden" aria-live="polite"></div>
+
+  <!-- Interactive Floating Toolbar -->
+  <header id="toolbar" class="toolbar">
+    <div class="toolbar-brand">FACET</div>
+    
+    <div class="toolbar-controls">
+      <!-- Mode Toggle (Analog / Digital) -->
+      <button id="mode-toggle-btn" class="tb-btn" title="Toggle Analog ↔ Digital">
+        <span id="mode-label">Analog</span>
+      </button>
+
+      <!-- Custom Style Selection Dropdown (10 Variations) -->
+      <div id="custom-style-select" class="custom-select">
+        <button class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+          <span class="cs-value">Style</span>
+          <span class="cs-arrow">▾</span>
+        </button>
+        <ul class="cs-options hidden" role="listbox"></ul>
+      </div>
+
+      <!-- Custom Sub-variant Selection Dropdown (3 Palettes) -->
+      <div id="custom-subvariant-select" class="custom-select">
+        <button class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+          <span class="cs-value">Palette</span>
+          <span class="cs-arrow">▾</span>
+        </button>
+        <ul class="cs-options hidden" role="listbox"></ul>
+      </div>
+
+      <!-- Fullscreen Toggle Button with SVG Icons -->
+      <button id="fullscreen-btn" class="tb-btn icon-btn" title="Toggle Fullscreen (F)" aria-label="Toggle Fullscreen">
+        <svg id="fs-expand-icon" class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+        <svg id="fs-compress-icon" class="fs-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
+        </svg>
+      </button>
+
+      <!-- Hide UI Button with SVG Eye-Off Icon -->
+      <button id="hide-ui-btn" class="tb-btn icon-btn" title="Hide UI Controls (Press Esc to restore)" aria-label="Hide UI">
+        <svg class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+          <line x1="1" y1="1" x2="23" y2="23"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Viewport Clock Container -->
+  <main id="clock-container" class="clock-container" tabindex="0" aria-label="Interactive Clock. Click to toggle mode, use Arrow keys to change styles.">
+    <div id="clock-stage" class="clock-stage"></div>
+  </main>
+
+  <!-- Discreet Floating Info Trigger -->
+  <button id="info-trigger" class="info-trigger" aria-label="Keyboard Shortcuts & Info" title="Shortcuts (?)">?</button>
+
+  <!-- Keyboard Shortcuts & Theme Badge Overlay -->
+  <div id="info-modal" class="info-modal hidden" aria-hidden="true">
+    <div class="info-content">
+      <div class="info-header">
+        <h2>FACET</h2>
+        <button id="info-close" class="info-close" aria-label="Close modal">&times;</button>
+      </div>
+      <div id="theme-badge" class="theme-badge">Classic Minimal (Dark)</div>
+      <ul class="shortcut-list">
+        <li><kbd>Click</kbd> / <kbd>Tap</kbd> <span>Toggle Analog ↔ Digital</span></li>
+        <li><kbd>&larr;</kbd> <kbd>&rarr;</kbd> / <span>Swipe</span> <span>Cycle Variation (1–10)</span></li>
+        <li><kbd>&uarr;</kbd> <kbd>&darr;</kbd> <span>Cycle Sub-variant (3 per style)</span></li>
+        <li><kbd>Double Click</kbd> / <kbd>F</kbd> <span>Fullscreen</span></li>
+        <li><kbd>R</kbd> <span>Reset to Default</span></li>
+        <li><kbd>Esc</kbd> <span>Restore Hidden UI</span></li>
+        <li><kbd>?</kbd> <span>Toggle Info</span></li>
+      </ul>
+      <p class="info-footer">Distraction-free digital time art.</p>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/themes.js"></script>
+  <script src="js/renderers.js"></script>
+  <script src="js/clock.js"></script>
+  <script src="js/controls.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "Facet — Minimal Clock",
+  "short_name": "Facet",
+  "description": "An elegant, distraction-free minimal clock web application.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0c0e",
+  "theme_color": "#0b0c0e",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
