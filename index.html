@@ -81,8 +81,32 @@
     <div id="clock-stage" class="clock-stage"></div>
   </main>
 
-  <!-- Discreet Floating Info Trigger -->
-  <button id="info-trigger" class="info-trigger" aria-label="Keyboard Shortcuts & Info" title="Shortcuts (?)">?</button>
+  <!-- Discreet Floating PC Application Download Trigger -->
+  <button id="download-trigger" class="info-trigger" aria-label="Download PC Application" title="Download for PC">
+    <svg class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+      <line x1="8" y1="21" x2="16" y2="21"></line>
+      <line x1="12" y1="17" x2="12" y2="21"></line>
+      <polyline points="9 10 12 13 15 10"></polyline>
+      <line x1="12" y1="6" x2="12" y2="13"></line>
+    </svg>
+  </button>
+
+  <!-- Download Confirmation Modal -->
+  <div id="download-modal" class="info-modal hidden" aria-hidden="true">
+    <div class="info-content download-modal-content">
+      <div class="info-header">
+        <h2>Facet for PC</h2>
+        <button id="download-modal-close" class="info-close" aria-label="Close modal">&times;</button>
+      </div>
+      <p class="download-modal-msg">Download it for PC?</p>
+      <p class="download-modal-sub">Get the standalone, distraction-free desktop application for Windows.</p>
+      <div class="download-modal-actions">
+        <button id="confirm-download-btn" class="tb-btn primary-btn">Yes, Download</button>
+        <button id="cancel-download-btn" class="tb-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Keyboard Shortcuts & Theme Badge Overlay -->
   <div id="info-modal" class="info-modal hidden" aria-hidden="true">

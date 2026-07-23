@@ -1,7 +1,7 @@
 /**
- * FACET — Interaction, Custom Morphism Dropdowns, Toast System & Fullscreen Controls
- * Binds custom theme dropdowns, Hide UI button, Toast system, vendor-prefixed Fullscreen API,
- * touch gestures, keyboard shortcuts, and auto-hiding UI on inactivity/fullscreen.
+ * FACET — Interaction, Custom Morphism Dropdowns, Toast System & Download PC App Controls
+ * Binds custom theme dropdowns, Hide UI button, PC Download trigger, Toast system,
+ * vendor-prefixed Fullscreen API, touch gestures, keyboard shortcuts, and auto-hiding UI.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,7 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const hideUiBtn = document.getElementById('hide-ui-btn');
   const toastContainer = document.getElementById('toast-container');
 
-  const infoTrigger = document.getElementById('info-trigger');
+  const downloadTrigger = document.getElementById('download-trigger');
+  const downloadModal = document.getElementById('download-modal');
+  const downloadModalClose = document.getElementById('download-modal-close');
+  const confirmDownloadBtn = document.getElementById('confirm-download-btn');
+  const cancelDownloadBtn = document.getElementById('cancel-download-btn');
+
   const infoModal = document.getElementById('info-modal');
   const infoClose = document.getElementById('info-close');
 
@@ -56,14 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   function hideUI() {
     toolbar.classList.add('manual-hidden');
-    infoTrigger.classList.add('manual-hidden');
+    if (downloadTrigger) downloadTrigger.classList.add('manual-hidden');
     closeAllCustomSelects();
     showToast('UI hidden. Press Esc to restore controls');
   }
 
   function restoreUI() {
     toolbar.classList.remove('manual-hidden', 'idle-hidden');
-    infoTrigger.classList.remove('manual-hidden', 'idle-hidden');
+    if (downloadTrigger) downloadTrigger.classList.remove('manual-hidden', 'idle-hidden');
     resetIdleTimer();
   }
 
@@ -82,14 +87,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (toolbar.classList.contains('manual-hidden')) return;
 
     toolbar.classList.remove('idle-hidden');
-    infoTrigger.classList.remove('idle-hidden');
+    if (downloadTrigger) downloadTrigger.classList.remove('idle-hidden');
 
     if (idleTimer) clearTimeout(idleTimer);
 
     idleTimer = setTimeout(() => {
-      if (isFullscreenActive() || !infoModal.classList.contains('hidden')) {
+      const modalOpen = (infoModal && !infoModal.classList.contains('hidden')) || (downloadModal && !downloadModal.classList.contains('hidden'));
+      if (isFullscreenActive() || modalOpen) {
         toolbar.classList.add('idle-hidden');
-        infoTrigger.classList.add('idle-hidden');
+        if (downloadTrigger) downloadTrigger.classList.add('idle-hidden');
         closeAllCustomSelects();
       }
     }, IDLE_TIMEOUT_MS);
@@ -273,15 +279,65 @@ document.addEventListener('DOMContentLoaded', () => {
         fsExpandIcon.classList.add('hidden');
         fsCompressIcon.classList.remove('hidden');
         toolbar.classList.add('idle-hidden');
-        infoTrigger.classList.add('idle-hidden');
+        if (downloadTrigger) downloadTrigger.classList.add('idle-hidden');
       } else {
         fsExpandIcon.classList.remove('hidden');
         fsCompressIcon.classList.add('hidden');
         toolbar.classList.remove('idle-hidden');
-        infoTrigger.classList.remove('idle-hidden');
+        if (downloadTrigger) downloadTrigger.classList.remove('idle-hidden');
       }
     });
   });
+
+  // --------------------------------------------------------------------------
+  // PC APPLICATION DOWNLOAD LOGIC
+  // --------------------------------------------------------------------------
+  function openDownloadModal() {
+    if (downloadModal) {
+      downloadModal.classList.remove('hidden');
+      downloadModal.setAttribute('aria-hidden', 'false');
+    }
+  }
+
+  function closeDownloadModal() {
+    if (downloadModal) {
+      downloadModal.classList.add('hidden');
+      downloadModal.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  function executePcDownload() {
+    closeDownloadModal();
+    const link = document.createElement('a');
+    link.href = 'roots/assets/bin/Facet Clock Setup 1.0.0.exe';
+    link.download = 'Facet Clock Setup 1.0.0.exe';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast('Downloading Facet Clock Setup for PC...');
+  }
+
+  if (downloadTrigger) {
+    downloadTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDownloadModal();
+    });
+  }
+
+  if (confirmDownloadBtn) {
+    confirmDownloadBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      executePcDownload();
+    });
+  }
+
+  if (cancelDownloadBtn) cancelDownloadBtn.addEventListener('click', closeDownloadModal);
+  if (downloadModalClose) downloadModalClose.addEventListener('click', closeDownloadModal);
+  if (downloadModal) {
+    downloadModal.addEventListener('click', (e) => {
+      if (e.target === downloadModal) closeDownloadModal();
+    });
+  }
 
   // --------------------------------------------------------------------------
   // STAGE CLICK & DOUBLE CLICK
@@ -289,7 +345,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let clickTimeout = null;
 
   clockContainer.addEventListener('click', (e) => {
-    if (!infoModal.classList.contains('hidden')) return;
+    const modalOpen = (infoModal && !infoModal.classList.contains('hidden')) || (downloadModal && !downloadModal.classList.contains('hidden'));
+    if (modalOpen) return;
 
     if (clickTimeout === null) {
       clickTimeout = setTimeout(() => {
@@ -349,6 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'Escape':
         restoreUI();
         closeInfoModal();
+        closeDownloadModal();
         closeAllCustomSelects();
         break;
     }
@@ -406,16 +464,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function openInfoModal() {
-    infoModal.classList.remove('hidden');
-    infoModal.setAttribute('aria-hidden', 'false');
+    if (infoModal) {
+      infoModal.classList.remove('hidden');
+      infoModal.setAttribute('aria-hidden', 'false');
+    }
   }
 
   function closeInfoModal() {
-    infoModal.classList.add('hidden');
-    infoModal.setAttribute('aria-hidden', 'true');
+    if (infoModal) {
+      infoModal.classList.add('hidden');
+      infoModal.setAttribute('aria-hidden', 'true');
+    }
   }
 
-  if (infoTrigger) infoTrigger.addEventListener('click', openInfoModal);
   if (infoClose) infoClose.addEventListener('click', closeInfoModal);
   if (infoModal) {
     infoModal.addEventListener('click', (e) => {
