@@ -1,6 +1,6 @@
 /* ==========================================================================
    FACET — Modern Morphism & Liquid Glass Design System
-   Features: Custom Morphism Dropdowns, Toast System, PC Installer Download Trigger
+   Features: Custom Morphism Dropdowns, Mini Live Preview, Custom Color Creator, Background FX
    ========================================================================== */
 
 :root {
@@ -22,6 +22,7 @@
   --font-mono: 'Space Mono', 'SF Mono', 'Fira Code', monospace;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-clay: 'Nunito', 'Inter', sans-serif;
+  --font-retro: 'VT323', monospace;
   --clock-font: var(--font-sans);
 }
 
@@ -83,6 +84,18 @@ html, body {
   0% { transform: scale(1) translate(0, 0); }
   50% { transform: scale(1.08) translate(-1%, 2%); }
   100% { transform: scale(1) translate(1%, -1%); }
+}
+
+/* Interactive Aurora & Starfield Particles Canvas FX */
+.bg-fx-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.8;
 }
 
 /* Liquid Glass Toast Notification Banner */
@@ -163,7 +176,7 @@ html, body {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.25);
   color: var(--fg);
-  padding: 8px 16px;
+  padding: 8px 18px;
   border-radius: 24px;
   font-size: 0.85rem;
   font-family: var(--font-mono);
@@ -204,10 +217,30 @@ html, body {
   filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
 }
 
+.cs-icon {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+  color: var(--accent);
+}
+
 /* Custom Morphism Dropdown Component */
 .custom-select {
   position: relative;
   display: inline-block;
+}
+.custom-select.full-width-cs {
+  width: 100%;
+}
+.custom-select.full-width-cs .cs-trigger {
+  width: 100%;
+  justify-content: space-between;
+  border-radius: 14px;
+}
+.custom-select.full-width-cs .cs-options {
+  width: 100%;
 }
 
 .cs-trigger {
@@ -302,6 +335,15 @@ html, body {
   font-size: 0.85rem;
   color: var(--accent);
 }
+.cs-option.customize-opt {
+  color: var(--accent);
+  font-weight: 700;
+  border-top: 1px solid var(--card-border);
+  margin-top: 4px;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+}
 
 /* Morphism Overrides */
 body[data-morphism="glass"] .cs-options {
@@ -355,6 +397,138 @@ body[data-morphism="brutalism"] .cs-option {
 body[data-morphism="brutalism"] .cs-option:hover {
   background: var(--card-border);
   color: var(--bg);
+}
+
+/* Custom Theme Creator & Color Palette Builder Styles */
+.custom-color-modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 32px 28px 28px 28px;
+  max-width: 480px;
+}
+
+.custom-modal-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.custom-modal-header h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+/* Mini Live Preview Clock Card */
+.custom-mini-preview {
+  width: 100%;
+  height: 110px;
+  border-radius: 20px;
+  background: var(--bg);
+  border: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+  position: relative;
+}
+.mini-preview-stage {
+  transform: scale(0.42);
+  transform-origin: center center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-color-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.color-picker-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.color-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-input-wrapper input[type="color"] {
+  -webkit-appearance: none;
+  border: 1px solid var(--card-border);
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+}
+.color-input-wrapper input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+.color-input-wrapper input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 10px;
+}
+
+.color-input-wrapper input[type="text"] {
+  width: 82px;
+  padding: 6px 8px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  text-align: center;
+  outline: none;
+}
+
+.custom-select-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.select-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  flex: 1;
+}
+.select-field label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--subtle);
+}
+
+.custom-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
 }
 
 /* Auto-Hide & Manual Hide UI Classes */
@@ -455,20 +629,20 @@ body[data-morphism="brutalism"] .cs-option:hover {
 }
 
 /* Standard Digital Styles (D1-D6) */
-.digital-d1 { font-size: clamp(3rem, 16vw, 12rem); font-weight: 300; font-family: var(--font-mono); }
+.digital-d1 { font-size: clamp(3rem, 16vw, 12rem); font-weight: 300; font-family: var(--clock-font); }
 .digital-d2 { display: flex; flex-direction: column; align-items: center; }
-.digital-d2 .d2-main { font-size: clamp(4rem, 20vw, 14rem); font-weight: 200; font-family: var(--font-mono); }
+.digital-d2 .d2-main { font-size: clamp(4rem, 20vw, 14rem); font-weight: 200; font-family: var(--clock-font); }
 .digital-d2 .d2-sec { font-size: clamp(1.2rem, 5vw, 3.5rem); color: var(--subtle); font-weight: 300; margin-top: -1vmin; }
-.digital-d3 { font-family: var(--font-mono); font-weight: 700; font-size: clamp(3rem, 14vw, 9rem); display: flex; flex-direction: column; gap: 0.5vmin; }
+.digital-d3 { font-family: var(--clock-font); font-weight: 700; font-size: clamp(3rem, 14vw, 9rem); display: flex; flex-direction: column; gap: 0.5vmin; }
 .digital-d3 .d3-line { line-height: 0.9; }
-.digital-d4 { font-size: clamp(2rem, 7vw, 5rem); font-weight: 300; max-width: 80vw; line-height: 1.3; text-transform: lowercase; font-family: var(--font-sans); }
+.digital-d4 { font-size: clamp(2rem, 7vw, 5rem); font-weight: 300; max-width: 80vw; line-height: 1.3; text-transform: lowercase; font-family: var(--clock-font); }
 .digital-d5 { display: flex; flex-direction: column; gap: 2vmin; }
 .d5-row { display: flex; align-items: center; gap: 1.5vmin; }
-.d5-label { font-size: clamp(1rem, 2.5vw, 1.8rem); font-family: var(--font-mono); width: 4ch; color: var(--subtle); text-align: right; }
+.d5-label { font-size: clamp(1rem, 2.5vw, 1.8rem); font-family: var(--clock-font); width: 4ch; color: var(--subtle); text-align: right; }
 .d5-dots { display: flex; gap: 1.5vmin; }
 .d5-dot { width: clamp(14px, 3.5vmin, 32px); height: clamp(14px, 3.5vmin, 32px); border-radius: 50%; background: var(--card-bg); border: 1px solid var(--card-border); transition: background 0.2s ease, box-shadow 0.2s ease; }
 .d5-dot.active { background: var(--accent); box-shadow: 0 0 12px var(--accent); border-color: var(--accent); }
-.digital-d6 { display: flex; align-items: center; gap: 2vmin; font-family: var(--font-mono); font-size: clamp(3rem, 14vw, 10rem); font-weight: 600; }
+.digital-d6 { display: flex; align-items: center; gap: 2vmin; font-family: var(--clock-font); font-size: clamp(3rem, 14vw, 10rem); font-weight: 600; }
 .d6-block { padding: 1vmin 3vmin; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--card-border); }
 
 /* D7 - Glassmorphism Digital */
@@ -480,7 +654,7 @@ body[data-morphism="brutalism"] .cs-option:hover {
   border: 1px solid var(--card-border);
   border-radius: 28px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-  font-family: var(--font-sans);
+  font-family: var(--clock-font);
   font-size: clamp(3rem, 15vw, 11rem);
   font-weight: 300;
   letter-spacing: 0.02em;
@@ -490,7 +664,7 @@ body[data-morphism="brutalism"] .cs-option:hover {
 .digital-d8 {
   display: flex;
   gap: 2.5vmin;
-  font-family: var(--font-clay);
+  font-family: var(--clock-font);
 }
 .d8-pill {
   padding: 3vmin 5.5vmin;
@@ -526,7 +700,7 @@ body[data-morphism="brutalism"] .cs-option:hover {
   box-shadow: 
     inset 10px 10px 20px var(--shadow-outer-dark),
     inset -10px -10px 20px var(--shadow-outer-light);
-  font-family: var(--font-mono);
+  font-family: var(--clock-font);
   font-size: clamp(3rem, 15vw, 10.5rem);
   font-weight: 700;
   color: var(--fg);
@@ -538,7 +712,7 @@ body[data-morphism="brutalism"] .cs-option:hover {
 .digital-d10 {
   display: flex;
   gap: 2vmin;
-  font-family: var(--font-mono);
+  font-family: var(--clock-font);
   transform: rotate(-1deg);
 }
 .d10-box {
@@ -626,28 +800,61 @@ body[data-morphism="brutalism"] .cs-option:hover {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 100%);
 }
 
-/* Download Modal Styles */
+/* Download Modal Styles - Perfectly Centered Flex Hierarchy */
 .download-modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 36px 32px 32px 32px;
+}
+
+.modal-abs-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+}
+
+.download-modal-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.download-modal-header h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--accent);
   text-align: center;
 }
+
 .download-modal-msg {
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   font-weight: 700;
-  margin-top: 8px;
-  margin-bottom: 8px;
   color: var(--fg);
+  margin-bottom: 8px;
+  text-align: center;
 }
+
 .download-modal-sub {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: var(--subtle);
+  max-width: 320px;
+  line-height: 1.45;
   margin-bottom: 24px;
-  line-height: 1.4;
+  text-align: center;
 }
+
 .download-modal-actions {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 14px;
+  width: 100%;
 }
 
 /* Info Modal Overlay */

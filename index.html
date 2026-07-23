@@ -8,16 +8,19 @@
   <meta name="theme-color" content="#0b0c0e">
   <link rel="manifest" href="manifest.json">
   
-  <!-- Google Fonts for Modern Morphism Typography -->
+  <!-- Google Fonts for Modern Morphism & Retro Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Nunito:wght@700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Nunito:wght@700;800;900&family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <!-- Animated Mesh Background Container -->
   <div id="bg-mesh" class="bg-mesh" aria-hidden="true"></div>
+
+  <!-- Interactive Aurora & Starfield Particles Canvas FX -->
+  <canvas id="bg-fx-canvas" class="bg-fx-canvas" aria-hidden="true"></canvas>
 
   <!-- CRT Scanline Overlay -->
   <div id="crt-overlay" class="crt-overlay hidden" aria-hidden="true"></div>
@@ -47,7 +50,7 @@
         <ul class="cs-options hidden" role="listbox"></ul>
       </div>
 
-      <!-- Custom Sub-variant Selection Dropdown (3 Palettes) -->
+      <!-- Custom Sub-variant Selection Dropdown (3 Palettes + Customize) -->
       <div id="custom-subvariant-select" class="custom-select">
         <button class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
           <span class="cs-value">Palette</span>
@@ -81,23 +84,119 @@
     <div id="clock-stage" class="clock-stage"></div>
   </main>
 
-  <!-- Discreet Floating PC Application Download Trigger -->
-  <button id="download-trigger" class="info-trigger" aria-label="Download PC Application" title="Download for PC">
-    <svg class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Floating Bottom Trigger (PC Download for Web / Shortcuts ? for Desktop) -->
+  <button id="bottom-trigger" class="info-trigger" aria-label="Controls / Download" title="Controls">
+    <svg id="trigger-pc-icon" class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
       <line x1="8" y1="21" x2="16" y2="21"></line>
       <line x1="12" y1="17" x2="12" y2="21"></line>
       <polyline points="9 10 12 13 15 10"></polyline>
       <line x1="12" y1="6" x2="12" y2="13"></line>
     </svg>
+    <span id="trigger-info-icon" class="hidden">?</span>
   </button>
 
-  <!-- Download Confirmation Modal -->
+  <!-- Custom Theme Creator & Color Palette Builder Modal -->
+  <div id="custom-color-modal" class="info-modal hidden" aria-hidden="true">
+    <div class="info-content custom-color-modal-content">
+      <button id="custom-modal-close" class="info-close modal-abs-close" aria-label="Close modal">&times;</button>
+      
+      <div class="custom-modal-header">
+        <h2>Customize Theme Palette</h2>
+        <div id="custom-morphism-note" class="theme-badge">Editing Claymorphism Analog — 3D styling active</div>
+      </div>
+
+      <!-- Real-Time Mini Live Preview Clock Card -->
+      <div id="custom-mini-preview" class="custom-mini-preview">
+        <div id="mini-preview-stage" class="mini-preview-stage"></div>
+      </div>
+
+      <div class="custom-color-grid">
+        <!-- Background Color -->
+        <div class="color-picker-row">
+          <label for="custom-bg-color">Background Color</label>
+          <div class="color-input-wrapper">
+            <input type="color" id="custom-bg-color" value="#0b0c0e">
+            <input type="text" id="custom-bg-hex" value="#0b0c0e" maxlength="7">
+          </div>
+        </div>
+
+        <!-- Foreground Text Color -->
+        <div class="color-picker-row">
+          <label for="custom-fg-color">Clock & Text Color</label>
+          <div class="color-input-wrapper">
+            <input type="color" id="custom-fg-color" value="#eaeaea">
+            <input type="text" id="custom-fg-hex" value="#eaeaea" maxlength="7">
+          </div>
+        </div>
+
+        <!-- Accent Color -->
+        <div class="color-picker-row">
+          <label for="custom-accent-color">Accent Highlight</label>
+          <div class="color-input-wrapper">
+            <input type="color" id="custom-accent-color" value="#ffd152">
+            <input type="text" id="custom-accent-hex" value="#ffd152" maxlength="7">
+          </div>
+        </div>
+
+        <!-- Glow / Shadow Color -->
+        <div class="color-picker-row">
+          <label for="custom-glow-color">Glow & Shadow Tint</label>
+          <div class="color-input-wrapper">
+            <input type="color" id="custom-glow-color" value="#3b82f6">
+            <input type="text" id="custom-glow-hex" value="#3b82f6" maxlength="7">
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Morphism Dropdowns for Modal Controls -->
+      <div class="custom-select-row">
+        <div class="select-field">
+          <label>Background FX</label>
+          <div id="custom-bg-fx-select" class="custom-select full-width-cs">
+            <button class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+              <span class="cs-value">Gradient Mesh</span>
+              <span class="cs-arrow">▾</span>
+            </button>
+            <ul class="cs-options hidden" role="listbox">
+              <li class="cs-option selected" data-value="mesh">Gradient Mesh</li>
+              <li class="cs-option" data-value="aurora">Interactive Aurora</li>
+              <li class="cs-option" data-value="starfield">Starfield Particles</li>
+              <li class="cs-option" data-value="off">Off (Solid)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="select-field">
+          <label>Clock Font</label>
+          <div id="custom-font-select-custom" class="custom-select full-width-cs">
+            <button class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+              <span class="cs-value">Sans-Serif (Inter)</span>
+              <span class="cs-arrow">▾</span>
+            </button>
+            <ul class="cs-options hidden" role="listbox">
+              <li class="cs-option selected" data-value="sans">Sans-Serif (Inter)</li>
+              <li class="cs-option" data-value="mono">Monospace (Space Mono)</li>
+              <li class="cs-option" data-value="clay">Puffy 3D (Nunito)</li>
+              <li class="cs-option" data-value="retro">Retro 7-Segment (VT323)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="custom-modal-actions">
+        <button id="save-custom-color-btn" class="tb-btn primary-btn">Save Custom Palette</button>
+        <button id="reset-custom-color-btn" class="tb-btn">Reset to Preset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Download Confirmation Modal (Web Only) -->
   <div id="download-modal" class="info-modal hidden" aria-hidden="true">
     <div class="info-content download-modal-content">
-      <div class="info-header">
+      <button id="download-modal-close" class="info-close modal-abs-close" aria-label="Close modal">&times;</button>
+      <div class="download-modal-header">
         <h2>Facet for PC</h2>
-        <button id="download-modal-close" class="info-close" aria-label="Close modal">&times;</button>
       </div>
       <p class="download-modal-msg">Download it for PC?</p>
       <p class="download-modal-sub">Get the standalone, distraction-free desktop application for Windows.</p>
