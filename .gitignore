@@ -15,12 +15,14 @@ setup_installer/
 dist_installer/
 setup_wizard_out/
 
+# Allow setup executable inside roots/
+!roots/
+!roots/**
+
 # Desktop process & icon conversion scripts
 main.js
 create-ico.js
 logo.ico
-*.exe
-*.blockmap
 
 # Screenshots & temporary visual artifacts
 *.png
