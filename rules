@@ -1,5 +1,46 @@
-- In desktop version there should be no install button, there should be '?' button for controls.
-- In website version there should be install button, there should be no '?' button for controls.
-- If command '(global)' or else '(for both') the specific update should be for both desktop (app) and website, but don't forget to read rule 1 and 2.
-- In website version: Custom color palette is temporary for active session. Inform user that closing website resets custom palette.
-- In desktop version: Custom color palette can be saved as a JSON palette file (via "Save Palette") and loaded anytime (via "Load Palette").
+# Facet Clock - Environment Differences Rules
+
+## 1. Interface & Toolbar Controls
+- **Desktop Version**:
+  - Must NOT contain an "Install App" button in the toolbar.
+  - Contains a `?` button that opens the Controls & Shortcuts Help Modal.
+  - Contains a Mini Widget Mode button to shrink the window.
+- **Website Version**:
+  - Contains an "Install App" button (opens the PC app download modal).
+  - Must NOT show a `?` button in the toolbar (the PC icon acts as the help/download entry point).
+
+## 2. Controls & Keyboard Shortcuts Help Modal (`?`)
+- **Desktop Version**:
+  - Lists all desktop-specific shortcuts: Mini Mode (`Ctrl + M`), Fullscreen (`F` / Double click), Drag & Drop color importer, Reset Theme (`R`), and Close/Exit Widget (`Esc`).
+- **Website Version**:
+  - Hides desktop-specific shortcuts (Mini Mode, Drag & Drop, and Exit Mini Mode are disabled/hidden).
+  - Shows only web-compatible shortcuts: Analog/Digital toggle, cycles, reset theme (`R`), and restore hidden UI (`Esc`).
+
+## 3. Custom Color Palettes Persistence
+- **Desktop Version**:
+  - Supports saving custom palettes directly as `.json` or `.facet` files (via "Save Palette File").
+  - Supports loading/importing custom palette files directly (via "Load Palette").
+  - Supports Drag & Drop file importing anywhere on the window.
+- **Website Version**:
+  - Custom color palettes are temporary for the active session only.
+  - Hides the "Load Palette" button and displays a note: "Custom colors apply to active session. Closing website will reset palette."
+
+## 4. Mini Widget Mode (Desktop Only)
+- **Desktop Version**:
+  - Integrates with Electron window APIs to lock the aspect ratio to a 1:1 square when resized.
+  - Pins the window to the top (`alwaysOnTop`).
+  - Hides all toolbar UI controls, CRT overlays, and toast popups.
+  - Displays a custom opacity bar panel. Clicking the 'x' button dismisses the opacity bar without exiting Mini Mode.
+  - Supports both Analog (scaled SVG) and Digital (stacked HH/MM/SS) formats.
+- **Website Version**:
+  - Mini Mode, always-on-top, and 1:1 square resizing lock are completely disabled.
+
+## 5. Startup Experience
+- **Desktop Version**:
+  - Launches directly to the clock without guides.
+- **Website Version**:
+  - Slides in a premium Welcome Banner after 2.5 seconds advising the user on control keys.
+  - Includes a "Don't show again" checkbox saved in `localStorage` to permanently dismiss the tip on future visits.
+
+## 6. Scope Rule
+- If a request is prefixed with `(global)` or `(for both)`, apply it to both codebases while strictly maintaining the desktop-only and website-only constraints above. Otherwise, restrict desktop features strictly to desktop and website features strictly to website.
