@@ -425,11 +425,12 @@
         <li><kbd>Click</kbd> / <kbd>Tap</kbd> <span>Toggle Analog ↔ Digital</span></li>
         <li><kbd>&larr;</kbd> <kbd>&rarr;</kbd> / <span>Swipe</span> <span>Cycle Style Variations (1–10)</span></li>
         <li><kbd>&uarr;</kbd> <kbd>&darr;</kbd> <span>Cycle Sub-Variants (3 per style)</span></li>
-        <li><kbd>Ctrl + M</kbd> / <kbd>Click Widget Button</kbd> <span>Mini Mode & Always-on-Top</span></li>
+        <li class="desktop-only-shortcut"><kbd>Ctrl + M</kbd> / <kbd>Click Widget Button</kbd> <span>Mini Mode & Always-on-Top</span></li>
         <li><kbd>Double Click</kbd> / <kbd>F</kbd> <span>Toggle Fullscreen</span></li>
-        <li><kbd>Drag & Drop</kbd> <span>Import .json / .facet Palettes</span></li>
+        <li class="desktop-only-shortcut"><kbd>Drag & Drop</kbd> <span>Import .json / .facet Palettes</span></li>
         <li><kbd>R</kbd> <span>Reset Theme to Default</span></li>
-        <li><kbd>Esc</kbd> <span>Exit Mini Mode / Restore Hidden UI</span></li>
+        <li class="desktop-only-shortcut"><kbd>Esc</kbd> <span>Exit Mini Mode / Restore Hidden UI</span></li>
+        <li class="web-only-shortcut"><kbd>Esc</kbd> <span>Restore Hidden UI</span></li>
         <li><kbd>?</kbd> / <kbd>/</kbd> <span>Toggle Controls & Shortcuts</span></li>
       </ul>
       <p class="info-footer">Distraction-free digital time art.</p>
@@ -502,6 +503,24 @@
   <script src="js/clock.js"></script>
   <script src="js/controls.js"></script>
   <script src="js/explore.js"></script>
+  <!-- Web Welcome Tip Banner (Website Only) -->
+  <div id="web-welcome-banner" class="web-welcome-banner hidden" aria-hidden="true">
+    <div class="welcome-banner-content">
+      <span class="welcome-emoji">💡</span>
+      <div class="welcome-text-group">
+        <p class="welcome-title">Welcome to Facet!</p>
+        <p class="welcome-desc">Press <strong>'?'</strong> on your keyboard or click the trigger icon below to open the Control Panel.</p>
+      </div>
+      <div class="welcome-actions">
+        <label class="dont-show-again">
+          <input type="checkbox" id="dont-show-welcome-cb">
+          <span>Don't show again</span>
+        </label>
+        <button id="welcome-dismiss-btn" class="welcome-dismiss-btn" aria-label="Dismiss banner">&times;</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

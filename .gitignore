@@ -16,6 +16,9 @@ agent/
 pc_app*/
 installer_build*/
 installer_dist*/
+app_build*/
+app_setup*/
+app_installer*/
 build_app/
 dist/
 dist_installer/

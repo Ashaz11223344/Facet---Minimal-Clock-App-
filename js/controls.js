@@ -904,6 +904,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  if (!isDesktopApp) {
+    const welcomeBanner = document.getElementById('web-welcome-banner');
+    const welcomeDismissBtn = document.getElementById('welcome-dismiss-btn');
+    const dontShowWelcomeCb = document.getElementById('dont-show-welcome-cb');
+
+    if (welcomeBanner && localStorage.getItem('dont_show_welcome_banner') !== 'true') {
+      setTimeout(() => {
+        welcomeBanner.classList.remove('hidden');
+        void welcomeBanner.offsetWidth;
+        welcomeBanner.classList.add('visible');
+      }, 2500);
+    }
+
+    if (welcomeDismissBtn && welcomeBanner) {
+      welcomeDismissBtn.addEventListener('click', () => {
+        if (dontShowWelcomeCb && dontShowWelcomeCb.checked) {
+          localStorage.setItem('dont_show_welcome_banner', 'true');
+        }
+        welcomeBanner.classList.remove('visible');
+        setTimeout(() => {
+          welcomeBanner.classList.add('hidden');
+        }, 600);
+      });
+    }
+  }
+
   syncToolbarUI();
   resetIdleTimer();
 });

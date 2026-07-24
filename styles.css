@@ -2445,3 +2445,121 @@ body.is-mini-widget .analog-clock-svg {
   max-width: 290px !important;
   max-height: 290px !important;
 }
+
+/* Environment Shortcut Visibility (Web vs Desktop) */
+.is-web-app .desktop-only-shortcut {
+  display: none !important;
+}
+
+.is-desktop-app .web-only-shortcut {
+  display: none !important;
+}
+
+/* Web Welcome Tip Banner (Website Only) */
+.web-welcome-banner {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  z-index: 10000;
+  width: 92%;
+  max-width: 500px;
+  background: rgba(18, 18, 18, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.web-welcome-banner.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Light Mode Overrides for Banner */
+body.light-mode .web-welcome-banner {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.welcome-banner-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  position: relative;
+}
+
+.welcome-emoji {
+  font-size: 1.5rem;
+  margin-top: 2px;
+}
+
+.welcome-text-group {
+  flex: 1;
+}
+
+.welcome-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin: 0 0 4px 0;
+  color: var(--fg);
+}
+
+.welcome-desc {
+  font-size: 0.85rem;
+  margin: 0;
+  color: var(--fg);
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.welcome-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  align-self: stretch;
+  justify-content: space-between;
+}
+
+.welcome-dismiss-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--fg);
+  opacity: 0.5;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: opacity 0.2s ease;
+}
+
+.welcome-dismiss-btn:hover {
+  opacity: 0.9;
+}
+
+.dont-show-again {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--fg);
+  opacity: 0.65;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.dont-show-again input[type="checkbox"] {
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
