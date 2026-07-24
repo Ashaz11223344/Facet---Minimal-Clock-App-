@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build:exe": "npx -y @electron/packager . FacetClock --platform=win32 --arch=x64 --icon=logo.ico --out=app_build_final --overwrite --prune=true --ignore=\"pc_app\" --ignore=\"installer\" --ignore=\"dist\" --electron-version=28.2.0",
+    "build:exe": "npx -y @electron/packager . FacetClock --platform=win32 --arch=x64 --icon=logo.ico --out=app_build_final_v2 --overwrite --prune=true --ignore=\"pc_app\" --ignore=\"installer\" --ignore=\"dist\" --electron-version=28.2.0",
     "build:installer": "npx -y electron-builder --win nsis"
   },
   "build": {
@@ -16,7 +16,7 @@
     "compression": "normal",
     "publish": null,
     "directories": {
-      "output": "app_setup_final"
+      "output": "app_setup_final_v7"
     },
     "win": {
       "target": "nsis",
