@@ -84,21 +84,72 @@ window.ClockEngine = (function() {
     return window.THEME_CATALOG.defaultPalettes[key];
   }
 
+  function getLuminance(hex) {
+    if (!hex || typeof hex !== 'string') return 0;
+    let c = hex.replace('#', '');
+    if (c.length === 3) c = c.split('').map(x => x + x).join('');
+    if (c.length !== 6) return 0;
+    const r = parseInt(c.substring(0, 2), 16) / 255;
+    const g = parseInt(c.substring(2, 4), 16) / 255;
+    const b = parseInt(c.substring(4, 6), 16) / 255;
+    const a = [r, g, b].map(v => v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+  }
+
   function applyCssTokens() {
     const palette = getActivePalette();
     const variation = getActiveVariation();
     const root = document.documentElement;
 
+    const bgLum = getLuminance(palette.bg);
+    const isLightBg = bgLum > 0.45;
+
+    let finalFg = palette.fg;
+    let finalSubtle = palette.subtle;
+    let finalCardBg = palette.cardBg;
+    let finalCardBorder = palette.cardBorder;
+
+    if (isLightBg) {
+      // Light Background (Pastel, Cream, White)
+      root.classList.add('theme-light-bg');
+      root.classList.remove('theme-dark-bg');
+
+      // Ensure foreground text has high contrast against light background
+      const fgLum = getLuminance(palette.fg);
+      if (fgLum > 0.45) {
+        // Primary text is too light on light background, auto-darken for readability
+        finalFg = '#1e293b';
+      }
+
+      finalSubtle = 'rgba(0, 0, 0, 0.65)';
+      finalCardBg = 'rgba(0, 0, 0, 0.04)';
+      finalCardBorder = 'rgba(0, 0, 0, 0.12)';
+    } else {
+      // Dark Background (Cyberpunk, Obsidian, Space)
+      root.classList.add('theme-dark-bg');
+      root.classList.remove('theme-light-bg');
+
+      const fgLum = getLuminance(palette.fg);
+      if (fgLum < 0.2) {
+        // Primary text is too dark on dark background, auto-lighten for readability
+        finalFg = '#f8fafc';
+      }
+
+      finalSubtle = 'rgba(255, 255, 255, 0.65)';
+      finalCardBg = palette.cardBg || 'rgba(255, 255, 255, 0.08)';
+      finalCardBorder = palette.cardBorder || 'rgba(255, 255, 255, 0.15)';
+    }
+
     root.style.setProperty('--bg', palette.bg);
-    root.style.setProperty('--fg', palette.fg);
-    root.style.setProperty('--accent', palette.accent || palette.fg);
-    root.style.setProperty('--subtle', palette.subtle || 'rgba(255,255,255,0.4)');
-    root.style.setProperty('--card-bg', palette.cardBg || 'rgba(255,255,255,0.1)');
-    root.style.setProperty('--card-border', palette.cardBorder || 'rgba(255,255,255,0.2)');
-    root.style.setProperty('--shadow-outer-dark', palette.shadowOuterDark || 'rgba(0,0,0,0.5)');
-    root.style.setProperty('--shadow-outer-light', palette.shadowOuterLight || 'rgba(255,255,255,0.05)');
-    root.style.setProperty('--shadow-inner-dark', palette.shadowInnerDark || 'rgba(0,0,0,0.6)');
-    root.style.setProperty('--shadow-inner-light', palette.shadowInnerLight || 'rgba(255,255,255,0.08)');
+    root.style.setProperty('--fg', finalFg);
+    root.style.setProperty('--accent', palette.accent || finalFg);
+    root.style.setProperty('--subtle', finalSubtle);
+    root.style.setProperty('--card-bg', finalCardBg);
+    root.style.setProperty('--card-border', finalCardBorder);
+    root.style.setProperty('--shadow-outer-dark', palette.shadowOuterDark || (isLightBg ? 'rgba(0,0,0,0.15)' : 'rgba(0,0,0,0.5)'));
+    root.style.setProperty('--shadow-outer-light', palette.shadowOuterLight || (isLightBg ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.05)'));
+    root.style.setProperty('--shadow-inner-dark', palette.shadowInnerDark || (isLightBg ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.6)'));
+    root.style.setProperty('--shadow-inner-light', palette.shadowInnerLight || (isLightBg ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.08)'));
     root.style.setProperty('--glow-color', palette.glow || 'transparent');
 
     // Font Family Selection

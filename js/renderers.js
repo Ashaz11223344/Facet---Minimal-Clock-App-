@@ -240,6 +240,16 @@ window.ClockRenderers = (function() {
     prevMin = min;
     prevSec = sec;
 
+    // Mini Widget Mode: Vertical 3-line Stacked Layout (HH / MM / SEC)
+    if (document.body.classList.contains('is-mini-widget')) {
+      return `
+        <div class="digital-clock-display mini-stacked-digital">
+          <div class="mini-digit-line mini-hh">${hh}</div>
+          <div class="mini-digit-line mini-mm">${mm}</div>
+          <div class="mini-digit-line mini-ss">${ss}</div>
+        </div>`;
+    }
+
     let html = `<div class="digital-clock-display">`;
 
     switch (variation.id) {

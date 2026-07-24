@@ -1,38 +1,41 @@
-# Node & Electron dependencies
+# Dependencies
 node_modules/
-package.json
-package-lock.json
 
-# Desktop Application executables & build folders
-dist/
-build_app/
-pc_app/
-pc_app_v2/
-installer/
-installer_dist/
-installer_build/
-setup_installer/
-dist_installer/
-setup_wizard_out/
+# Local configuration files
+.env
+.DS_Store
+Thumbs.db
+skills-lock.json
 
-# Allow setup executable inside roots/
-!roots/
-!roots/**
-
-# Desktop process & icon conversion scripts
-main.js
-create-ico.js
-logo.ico
-
-# Screenshots & temporary visual artifacts
-*.png
-!logo.png
-!rounded-corners.png
-
-# GSD / IDE local internal state
+# IDE & agent directories
 .agents/
 .claude/
 agent/
-skills-lock.json
-.DS_Store
-Thumbs.db
+
+# All build artifact directories (ignore all compiled apps and installers)
+pc_app*/
+installer_build*/
+installer_dist*/
+build_app/
+dist/
+dist_installer/
+installer/
+setup_build_out/
+setup_installer/
+setup_wizard_out/
+
+# Executables & archives
+*.exe
+*.zip
+*.7z
+
+# Visual previews
+*.png
+!logo.png
+
+# Keep core Electron scripts and icons
+!main.js
+!preload.js
+!package.json
+!package-lock.json
+!logo.ico

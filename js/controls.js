@@ -59,6 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Detect Desktop App environment vs Web App environment per Rule 1 & 2 & Palette saving rule
   const isDesktopApp = !!(window.process && window.process.versions && window.process.versions.electron) || window.navigator.userAgent.toLowerCase().includes('electron');
 
+  document.body.classList.toggle('is-desktop-app', isDesktopApp);
+  document.body.classList.toggle('is-web-app', !isDesktopApp);
+
   if (isDesktopApp) {
     if (triggerPcIcon) triggerPcIcon.classList.add('hidden');
     if (triggerInfoIcon) triggerInfoIcon.classList.remove('hidden');
@@ -339,18 +342,44 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // FULLSCREEN HANDLER
+  // FULLSCREEN HANDLER (Browser & Electron IPC Support)
   // --------------------------------------------------------------------------
+  let desktopFullscreenActive = false;
+
   function isFullscreenActive() {
     return !!(
       document.fullscreenElement ||
       document.webkitFullscreenElement ||
       document.mozFullScreenElement ||
-      document.msFullscreenElement
+      document.msFullscreenElement ||
+      desktopFullscreenActive
     );
   }
 
+  function syncFullscreenUI(isFS) {
+    if (fsExpandIcon && fsCompressIcon) {
+      if (isFS) {
+        fsExpandIcon.classList.add('hidden');
+        fsCompressIcon.classList.remove('hidden');
+        if (toolbar) toolbar.classList.add('idle-hidden');
+        if (bottomTrigger) bottomTrigger.classList.add('idle-hidden');
+      } else {
+        fsExpandIcon.classList.remove('hidden');
+        fsCompressIcon.classList.add('hidden');
+        if (toolbar) toolbar.classList.remove('idle-hidden');
+        if (bottomTrigger) bottomTrigger.classList.remove('idle-hidden');
+      }
+    }
+  }
+
   function toggleFullscreen() {
+    if (isDesktopApp && window.electronAPI && window.electronAPI.setFullScreen) {
+      desktopFullscreenActive = !desktopFullscreenActive;
+      window.electronAPI.setFullScreen(desktopFullscreenActive);
+      syncFullscreenUI(desktopFullscreenActive);
+      return;
+    }
+
     const docEl = document.documentElement;
     const isFS = isFullscreenActive();
 
@@ -379,18 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(evt => {
     document.addEventListener(evt, () => {
-      const isFS = isFullscreenActive();
-      if (isFS) {
-        fsExpandIcon.classList.add('hidden');
-        fsCompressIcon.classList.remove('hidden');
-        toolbar.classList.add('idle-hidden');
-        if (bottomTrigger) bottomTrigger.classList.add('idle-hidden');
-      } else {
-        fsExpandIcon.classList.remove('hidden');
-        fsCompressIcon.classList.add('hidden');
-        toolbar.classList.remove('idle-hidden');
-        if (bottomTrigger) bottomTrigger.classList.remove('idle-hidden');
-      }
+      syncFullscreenUI(isFullscreenActive());
     });
   });
 
@@ -682,6 +700,20 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         toggleFullscreen();
         break;
+      case 'm':
+      case 'M':
+        if (e.ctrlKey || e.metaKey) {
+          e.preventDefault();
+          toggleMiniWidget();
+        }
+        break;
+      case 'a':
+      case 'A':
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
+          e.preventDefault();
+          toggleAlwaysOnTop();
+        }
+        break;
       case 'r':
       case 'R':
         e.preventDefault();
@@ -693,14 +725,97 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleInfoModal();
         break;
       case 'Escape':
-        restoreUI();
-        closeInfoModal();
-        closeDownloadModal();
-        closeCustomColorModal();
-        closeAllCustomSelects();
+        if (document.body.classList.contains('is-mini-widget')) {
+          toggleMiniWidget(false);
+        } else {
+          restoreUI();
+          closeInfoModal();
+          closeDownloadModal();
+          closeCustomColorModal();
+          closeAllCustomSelects();
+        }
         break;
     }
   });
+
+  // --------------------------------------------------------------------------
+  // DESKTOP-ONLY: UNIFIED MINI WIDGET & ALWAYS-ON-TOP MODE (1:1 Square Lock)
+  // --------------------------------------------------------------------------
+  const widgetOpacityPanel = document.getElementById('widget-opacity-panel');
+  const widgetOpacitySlider = document.getElementById('widget-opacity-slider');
+  const opacityValText = document.getElementById('opacity-val-text');
+  const widgetExitBtn = document.getElementById('widget-exit-btn');
+  const miniModeBtn = document.getElementById('mini-mode-btn');
+
+  let isMiniWidget = false;
+
+  function toggleMiniWidget(forceMini) {
+    if (!isDesktopApp) return;
+    const targetState = typeof forceMini === 'boolean' ? forceMini : !isMiniWidget;
+    isMiniWidget = targetState;
+
+    document.body.classList.toggle('is-mini-widget', targetState);
+
+    if (targetState) {
+      if (toolbar) toolbar.classList.add('hidden');
+      if (bottomTrigger) bottomTrigger.classList.add('hidden');
+      if (widgetOpacityPanel) widgetOpacityPanel.classList.remove('hidden');
+
+      if (window.electronAPI) {
+        if (window.electronAPI.setWindowSize) window.electronAPI.setWindowSize(320, 320);
+        if (window.electronAPI.setAlwaysOnTop) window.electronAPI.setAlwaysOnTop(true);
+        if (window.electronAPI.setAspectRatio) window.electronAPI.setAspectRatio(1.0);
+      }
+
+      if (window.ClockEngine && window.ClockEngine.updateTime) {
+        window.ClockEngine.updateTime();
+      }
+      showToast('Entered Mini Widget Mode (Pinned to Top • 1:1 Square Lock)');
+    } else {
+      if (toolbar) toolbar.classList.remove('hidden');
+      if (bottomTrigger) bottomTrigger.classList.remove('hidden');
+      if (widgetOpacityPanel) widgetOpacityPanel.classList.add('hidden');
+
+      if (window.electronAPI) {
+        if (window.electronAPI.setWindowSize) window.electronAPI.setWindowSize(1280, 800);
+        if (window.electronAPI.setOpacity) window.electronAPI.setOpacity(1.0);
+        if (window.electronAPI.setAlwaysOnTop) window.electronAPI.setAlwaysOnTop(false);
+        if (window.electronAPI.setAspectRatio) window.electronAPI.setAspectRatio(0);
+      }
+
+      if (widgetOpacitySlider) widgetOpacitySlider.value = 100;
+      if (opacityValText) opacityValText.textContent = '100%';
+      if (window.ClockEngine && window.ClockEngine.updateTime) {
+        window.ClockEngine.updateTime();
+      }
+      showToast('Exited Mini Widget Mode');
+    }
+  }
+
+  if (miniModeBtn) miniModeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleMiniWidget(); });
+  if (widgetExitBtn) {
+    widgetExitBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (widgetOpacityPanel) widgetOpacityPanel.classList.add('hidden');
+    });
+  }
+
+  if (widgetOpacitySlider) {
+    widgetOpacitySlider.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value, 10);
+      if (opacityValText) opacityValText.textContent = `${val}%`;
+      if (window.electronAPI && window.electronAPI.setOpacity) {
+        window.electronAPI.setOpacity(val / 100);
+      }
+      localStorage.setItem('clock_widget_opacity', String(val));
+    });
+  }
+
+  // Restore Pin state on launch if desktop app
+  if (isDesktopApp) {
+    const savedPin = localStorage.getItem('clock_pinned_state') === 'true';
+    if (savedPin) toggleAlwaysOnTop(true);
+  }
 
   // --------------------------------------------------------------------------
   // TOUCH SWIPE GESTURES
@@ -773,6 +888,21 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target === infoModal) closeInfoModal();
     });
   }
+
+  // --------------------------------------------------------------------------
+  // GLOBAL TACTILE BUTTON CLICK & SYSTEM LISTENING ANIMATION FEEDBACK
+  // --------------------------------------------------------------------------
+  document.addEventListener('click', (e) => {
+    const clickableTarget = e.target.closest('button, .tb-btn, .cs-trigger, .cs-option, .info-trigger, .help-btn-circle, .favorites-quick-btn, .tab-nav-btn, .pill-btn, .card-heart-btn, .palette-card, .info-close, .sc-btn, .secondary-outline-btn, .clear-favorites-btn');
+    if (clickableTarget) {
+      clickableTarget.classList.remove('system-listened');
+      void clickableTarget.offsetWidth;
+      clickableTarget.classList.add('system-listened');
+      setTimeout(() => {
+        clickableTarget.classList.remove('system-listened');
+      }, 350);
+    }
+  });
 
   syncToolbarUI();
   resetIdleTimer();

@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Facet — Minimal Clock</title>
-  <meta name="description" content="An elegant, distraction-free minimal clock web application supporting 60 visual themes across glassmorphic, claymorphic, neumorphic, and brutalist styles.">
+  <meta name="description"
+    content="An elegant, distraction-free minimal clock web application supporting 60 visual themes across glassmorphic, claymorphic, neumorphic, and brutalist styles.">
   <meta name="theme-color" content="#0b0c0e">
   <link rel="manifest" href="manifest.json">
-  
+
   <!-- Google Fonts for Modern Morphism & Retro Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Nunito:wght@700;800;900&family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Nunito:wght@700;800;900&family=Space+Mono:wght@400;700&family=VT323&display=swap"
+    rel="stylesheet">
+
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <!-- Animated Mesh Background Container -->
   <div id="bg-mesh" class="bg-mesh" aria-hidden="true"></div>
@@ -37,7 +42,7 @@
   <!-- Interactive Floating Toolbar -->
   <header id="toolbar" class="toolbar">
     <div class="toolbar-brand">FACET</div>
-    
+
     <div class="toolbar-controls">
       <!-- Mode Toggle (Analog / Digital) -->
       <button id="mode-toggle-btn" class="tb-btn" title="Toggle Analog ↔ Digital">
@@ -62,34 +67,63 @@
         <ul class="cs-options hidden" role="listbox"></ul>
       </div>
 
+      <!-- Search Color Palettes Button (Search Icon) -->
+      <button id="explore-btn" class="tb-btn icon-btn" title="Search Color Palettes" aria-label="Search Palettes">
+        <svg class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+
       <!-- Fullscreen Toggle Button with SVG Icons -->
       <button id="fullscreen-btn" class="tb-btn icon-btn" title="Toggle Fullscreen (F)" aria-label="Toggle Fullscreen">
-        <svg id="fs-expand-icon" class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        <svg id="fs-expand-icon" class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3">
+          </path>
         </svg>
-        <svg id="fs-compress-icon" class="fs-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
+        <svg id="fs-compress-icon" class="fs-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3">
+          </path>
         </svg>
       </button>
 
       <!-- Hide UI Button with SVG Eye-Off Icon -->
-      <button id="hide-ui-btn" class="tb-btn icon-btn" title="Hide UI Controls (Press Esc to restore)" aria-label="Hide UI">
-        <svg class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+      <button id="hide-ui-btn" class="tb-btn icon-btn" title="Hide UI Controls (Press Esc to restore)"
+        aria-label="Hide UI">
+        <svg class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+          </path>
           <line x1="1" y1="1" x2="23" y2="23"></line>
+        </svg>
+      </button>
+
+      <!-- Desktop Mini Widget & Always-on-Top Mode Button -->
+      <button id="mini-mode-btn" class="tb-btn icon-btn mini-mode-btn" title="Mini Widget & Always-on-Top Mode (Ctrl + M)"
+        aria-label="Mini Widget Mode">
+        <svg class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+          <rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor"></rect>
         </svg>
       </button>
     </div>
   </header>
 
   <!-- Main Viewport Clock Container -->
-  <main id="clock-container" class="clock-container" tabindex="0" aria-label="Interactive Clock. Click to toggle mode, use Arrow keys to change styles.">
+  <main id="clock-container" class="clock-container" tabindex="0"
+    aria-label="Interactive Clock. Click to toggle mode, use Arrow keys to change styles.">
     <div id="clock-stage" class="clock-stage"></div>
   </main>
 
   <!-- Floating Bottom Trigger (PC Download for Web / Shortcuts ? for Desktop) -->
   <button id="bottom-trigger" class="info-trigger" aria-label="Controls / Download" title="Controls">
-    <svg id="trigger-pc-icon" class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg id="trigger-pc-icon" class="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
       <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
       <line x1="8" y1="21" x2="16" y2="21"></line>
       <line x1="12" y1="17" x2="12" y2="21"></line>
@@ -103,11 +137,12 @@
   <div id="custom-color-modal" class="info-modal hidden" aria-hidden="true">
     <div class="info-content custom-color-modal-content">
       <button id="custom-modal-close" class="info-close modal-abs-close" aria-label="Close modal">&times;</button>
-      
+
       <div class="custom-modal-header">
         <h2>Customize Theme Palette</h2>
         <div id="custom-morphism-note" class="theme-badge">Editing Claymorphism Analog — 3D styling active</div>
-        <p id="palette-persistence-note" class="palette-note">Custom colors apply to active session. Closing website will reset palette.</p>
+        <p id="palette-persistence-note" class="palette-note">Custom colors apply to active session. Closing website
+          will reset palette.</p>
       </div>
 
       <!-- Real-Time Mini Live Preview Clock Card -->
@@ -196,6 +231,172 @@
     </div>
   </div>
 
+  <!-- Explore Tab Main Catalog Modal (Desktop) -->
+  <div id="explore-modal" class="info-modal hidden" aria-hidden="true">
+    <div class="info-content explore-modal-content">
+      <header class="explore-header">
+        <div class="explore-header-left">
+          <h2>Explore Color Palettes</h2>
+        </div>
+
+        <div class="explore-header-right">
+          <!-- Desktop Pin Button -->
+          <button id="explore-pin-btn" class="help-btn-circle desktop-pin-btn" title="Pin to Top (Ctrl + Shift + A)"
+            aria-label="Pin to Top">
+            <svg class="pin-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+              <line x1="12" y1="17" x2="12" y2="22"></line>
+              <path d="M5 17h14l-1.5-6H6.5L5 17z"></path>
+              <path d="M9 11V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v7"></path>
+            </svg>
+          </button>
+          <!-- Desktop Help (?) Button -->
+          <button id="explore-help-btn" class="help-btn-circle" title="Shortcuts & Controls"
+            aria-label="Controls Info">?</button>
+          <!-- Close Button -->
+          <button id="explore-modal-close" class="info-close" aria-label="Close Explore">&times;</button>
+        </div>
+      </header>
+
+      <!-- Search + Favorites Row -->
+      <div class="explore-search-row">
+        <div class="explore-search-bar">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="explore-search-input" placeholder="Search palettes, mood, vibe..." autocomplete="off">
+          <button id="explore-search-clear" class="search-clear-btn hidden" aria-label="Clear search">&times;</button>
+        </div>
+
+        <button id="explore-favorites-quick-btn" class="favorites-quick-btn" title="View Favorites"
+          aria-label="View Favorites">
+          <svg class="heart-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+            </path>
+          </svg>
+          <span id="explore-favorites-badge" class="favorites-badge hidden">0</span>
+        </button>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div id="explore-tab-nav" class="explore-tab-nav">
+        <button id="tab-btn-explore" class="tab-nav-btn active" data-tab="explore">EXPLORE</button>
+        <button id="tab-btn-favorites" class="tab-nav-btn" data-tab="favorites">FAVORITES (0)</button>
+      </div>
+
+      <div class="explore-body">
+        <!-- EXPLORE VIEW CONTAINER -->
+        <div id="explore-view-content" class="tab-view-content">
+          <!-- Custom Imported Palettes Section -->
+          <section id="explore-custom-section" class="explore-section hidden">
+            <h3 class="explore-section-title custom-section-title">YOUR CUSTOM PALETTES</h3>
+            <div id="explore-custom-grid" class="explore-grid custom-grid"></div>
+          </section>
+          <!-- Recents Section -->
+          <section id="explore-recents-section" class="explore-section hidden">
+            <h3 class="explore-section-title">Recents</h3>
+            <div id="explore-recents-grid" class="explore-grid recents-grid"></div>
+          </section>
+
+          <!-- Category Filter Pills -->
+          <div id="explore-category-pills" class="category-pills">
+            <button class="pill-btn active" data-cat="all">All</button>
+            <button class="pill-btn" data-cat="ethereal">Ethereal &amp; Glass</button>
+            <button class="pill-btn" data-cat="cyberpunk">Cyberpunk &amp; Dark</button>
+            <button class="pill-btn" data-cat="nordic">Nordic &amp; Minimal</button>
+            <button class="pill-btn" data-cat="retro">Retro &amp; Vintage</button>
+            <button class="pill-btn" data-cat="nature">Nature &amp; Earthy</button>
+            <button class="pill-btn" data-cat="pastel">Pastel &amp; Cream</button>
+            <button class="pill-btn" data-cat="premium">Premium &amp; Corporate</button>
+          </div>
+
+          <!-- All Palettes Grid -->
+          <section class="explore-section">
+            <h3 id="explore-grid-title" class="explore-section-title">All Palettes</h3>
+            <div id="explore-palettes-grid" class="explore-grid"></div>
+            <div id="explore-empty-state" class="explore-empty-state hidden">
+              <p class="empty-title">No palettes found</p>
+              <p class="empty-sub">Try searching for a different palette name, tag, or mood.</p>
+              <button id="explore-empty-clear-btn" class="tb-btn primary-btn">Clear Search</button>
+            </div>
+          </section>
+        </div>
+
+        <!-- FAVORITES VIEW CONTAINER -->
+        <div id="favorites-view-content" class="tab-view-content hidden">
+          <section class="explore-section">
+            <h3 class="explore-section-title favorites-section-title">YOUR FAVORITES</h3>
+            <div id="explore-favorites-grid" class="explore-grid"></div>
+
+            <div id="favorites-empty-state" class="favorites-empty-state hidden">
+              <div class="empty-heart-icon">💔</div>
+              <p class="empty-title">No Favorites Yet</p>
+              <p class="empty-sub">Explore palettes and favorite your most loved color schemes!</p>
+              <button id="favorites-browse-btn" class="tb-btn secondary-outline-btn">Browse All Palettes &rarr;</button>
+            </div>
+
+            <div id="favorites-actions-row" class="favorites-actions-row hidden">
+              <button id="clear-all-favorites-btn" class="clear-favorites-btn">Clear All Favorites</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clear All Favorites Confirmation Modal -->
+  <div id="clear-favorites-modal" class="info-modal hidden" aria-hidden="true">
+    <div class="info-content clear-modal-content">
+      <button id="clear-modal-close" class="info-close modal-abs-close" aria-label="Close modal">&times;</button>
+      <h2>Clear All Favorites?</h2>
+      <p class="clear-modal-msg">Are you sure you want to remove all favorited palettes? This action cannot be undone.
+      </p>
+      <div class="clear-modal-actions">
+        <button id="confirm-clear-favorites-btn" class="tb-btn danger-btn">Clear All</button>
+        <button id="cancel-clear-favorites-btn" class="tb-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Palette Preview Modal -->
+  <div id="palette-preview-modal" class="info-modal hidden" aria-hidden="true">
+    <div class="info-content preview-modal-content">
+      <button id="preview-modal-close" class="info-close modal-abs-close" aria-label="Close preview">&times;</button>
+
+      <div class="preview-header">
+        <div id="preview-mode-toggle" class="segmented-control">
+          <button id="preview-mode-analog" class="sc-btn active" data-mode="analog">Analog</button>
+          <button id="preview-mode-digital" class="sc-btn" data-mode="digital">Digital</button>
+        </div>
+      </div>
+
+      <!-- Live Preview Stage -->
+      <div class="preview-stage-container">
+        <div id="preview-stage" class="preview-stage"></div>
+      </div>
+
+      <!-- Preview Details & Swatches -->
+      <div class="preview-info">
+        <h2 id="preview-palette-name" class="preview-title">Meadow Sunflower Glow</h2>
+        <p id="preview-palette-desc" class="preview-desc">Warm, earthy tones inspired by wildflower fields at golden
+          hour</p>
+        <div id="preview-tags" class="preview-tags"></div>
+
+        <!-- Color Swatches Grid -->
+        <div id="preview-swatches" class="preview-swatches"></div>
+      </div>
+
+      <div class="preview-actions">
+        <button id="preview-back-btn" class="tb-btn">Back to Explore</button>
+        <button id="preview-apply-btn" class="tb-btn primary-btn">Apply Palette</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Download Confirmation Modal (Web Only) -->
   <div id="download-modal" class="info-modal hidden" aria-hidden="true">
     <div class="info-content download-modal-content">
@@ -216,21 +417,83 @@
   <div id="info-modal" class="info-modal hidden" aria-hidden="true">
     <div class="info-content">
       <div class="info-header">
-        <h2>FACET</h2>
+        <h2>FACET CONTROLS</h2>
         <button id="info-close" class="info-close" aria-label="Close modal">&times;</button>
       </div>
       <div id="theme-badge" class="theme-badge">Classic Minimal (Dark)</div>
       <ul class="shortcut-list">
         <li><kbd>Click</kbd> / <kbd>Tap</kbd> <span>Toggle Analog ↔ Digital</span></li>
-        <li><kbd>&larr;</kbd> <kbd>&rarr;</kbd> / <span>Swipe</span> <span>Cycle Variation (1–10)</span></li>
-        <li><kbd>&uarr;</kbd> <kbd>&darr;</kbd> <span>Cycle Sub-variant (3 per style)</span></li>
-        <li><kbd>Double Click</kbd> / <kbd>F</kbd> <span>Fullscreen</span></li>
-        <li><kbd>R</kbd> <span>Reset to Default</span></li>
-        <li><kbd>Esc</kbd> <span>Restore Hidden UI</span></li>
-        <li><kbd>?</kbd> <span>Toggle Info</span></li>
+        <li><kbd>&larr;</kbd> <kbd>&rarr;</kbd> / <span>Swipe</span> <span>Cycle Style Variations (1–10)</span></li>
+        <li><kbd>&uarr;</kbd> <kbd>&darr;</kbd> <span>Cycle Sub-Variants (3 per style)</span></li>
+        <li><kbd>Ctrl + M</kbd> / <kbd>Click Widget Button</kbd> <span>Mini Mode & Always-on-Top</span></li>
+        <li><kbd>Double Click</kbd> / <kbd>F</kbd> <span>Toggle Fullscreen</span></li>
+        <li><kbd>Drag & Drop</kbd> <span>Import .json / .facet Palettes</span></li>
+        <li><kbd>R</kbd> <span>Reset Theme to Default</span></li>
+        <li><kbd>Esc</kbd> <span>Exit Mini Mode / Restore Hidden UI</span></li>
+        <li><kbd>?</kbd> / <kbd>/</kbd> <span>Toggle Controls & Shortcuts</span></li>
       </ul>
       <p class="info-footer">Distraction-free digital time art.</p>
     </div>
+  </div>
+  <!-- Desktop Drag & Drop File Overlay -->
+  <div id="desktop-drag-drop-overlay" class="drag-drop-overlay hidden" aria-hidden="true">
+    <div class="drag-drop-content">
+      <svg class="drag-drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v10m0 0l3-3m-3 3l-3-3"></path>
+        <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"></path>
+      </svg>
+      <h2>Drop Palette File to Import</h2>
+      <p>Supports .json and .facet palette files</p>
+    </div>
+  </div>
+
+  <!-- Palette Import Confirmation Modal -->
+  <div id="import-palette-modal" class="info-modal hidden" aria-hidden="true">
+    <div class="info-content import-modal-content">
+      <h2 class="import-modal-title">Import Palette from File</h2>
+
+      <div class="import-preview-strip">
+        <div id="import-preview-colors" class="card-color-strip"></div>
+      </div>
+
+      <div class="import-details-box">
+        <p class="import-detail-row"><strong>Palette Name:</strong> <span id="import-name-val"></span></p>
+        <p id="import-desc-row" class="import-detail-row hidden"><strong>Description:</strong> <span id="import-desc-val"></span></p>
+        <p class="import-detail-row"><strong>File:</strong> <span id="import-file-val" class="mono-text"></span></p>
+        <p class="import-detail-row"><strong>Colors:</strong> <span id="import-colors-count">4</span></p>
+      </div>
+
+      <div id="import-warning-box" class="import-warning-box hidden">
+        <span class="warning-icon">⚠️</span>
+        <p>A palette with this name already exists. Import will replace it.</p>
+      </div>
+
+      <div class="import-modal-actions">
+        <button id="import-cancel-btn" class="tb-btn secondary-outline-btn">Cancel</button>
+        <button id="import-confirm-btn" class="tb-btn primary-btn">Import Palette</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Palette Import Error Dialog Modal -->
+  <div id="import-error-modal" class="info-modal hidden" aria-hidden="true">
+    <div class="info-content import-error-content">
+      <div class="error-cross-icon">✗</div>
+      <h2 id="import-error-title" class="import-error-heading">Import Failed</h2>
+      <p id="import-error-msg" class="import-error-sub">The file provided is not a valid palette file.</p>
+      <div id="import-error-details" class="import-error-bullets hidden"></div>
+      <div class="import-modal-actions">
+        <button id="import-error-close-btn" class="tb-btn primary-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini Widget Opacity Controls Overlay (Desktop Only) -->
+  <div id="widget-opacity-panel" class="widget-opacity-panel hidden">
+    <span class="opacity-label">Opacity: <span id="opacity-val-text">100%</span></span>
+    <input type="range" id="widget-opacity-slider" min="10" max="100" value="100" step="5">
+    <button id="widget-exit-btn" class="widget-exit-btn" title="Exit Mini Widget Mode (Esc)">&times;</button>
   </div>
 
   <!-- JavaScript Modules -->
@@ -238,6 +501,7 @@
   <script src="js/renderers.js"></script>
   <script src="js/clock.js"></script>
   <script src="js/controls.js"></script>
+  <script src="js/explore.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -246,4 +510,5 @@
     }
   </script>
 </body>
+
 </html>
