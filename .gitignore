@@ -28,6 +28,8 @@ setup_wizard_out/
 *.exe
 *.zip
 *.7z
+!roots/assets/bin/Facet Clock Setup 1.0.0.exe
+!Facet Clock Setup 1.0.0.exe
 
 # Visual previews
 *.png
