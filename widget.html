@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facet Clock Widget</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: transparent !important;
+      -webkit-app-region: drag; /* Allows dragging widget window around on desktop */
+      user-select: none;
+    }
+    
+    .widget-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      padding: 12px;
+      position: relative;
+    }
+
+    .widget-clock-stage {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Interactive elements can opt-out of dragging if needed */
+    .no-drag {
+      -webkit-app-region: no-drag;
+    }
+  </style>
+</head>
+<body class="is-desktop-app is-widget-window">
+  <div id="widget-container" class="widget-container">
+    <div id="clock-stage" class="widget-clock-stage"></div>
+  </div>
+
+  <script src="js/themes.js"></script>
+  <script src="js/renderers.js"></script>
+  <script src="js/clock.js"></script>
+  <script>
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const widgetId = urlParams.get('id');
+
+      function loadConfig() {
+        try {
+          const list = JSON.parse(localStorage.getItem('clock_pinned_widgets') || '[]');
+          return list.find(w => w.id === widgetId) || null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function applyConfig(config) {
+        if (!config || !config.customization) return;
+        const cust = config.customization;
+        
+        if (typeof cust.opacity === 'number') {
+          document.body.style.opacity = cust.opacity;
+        }
+
+        if (window.FacetClock) {
+          if (cust.clockMode === 'digital') {
+            window.FacetClock.setMode('digital');
+          } else {
+            window.FacetClock.setMode('analog');
+          }
+        }
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const cfg = loadConfig();
+        applyConfig(cfg);
+
+        if (window.electronAPI && window.electronAPI.onWidgetConfigUpdated) {
+          window.electronAPI.onWidgetConfigUpdated((data) => {
+            if (data && data.customization) {
+              applyConfig({ customization: data.customization });
+            }
+          });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
