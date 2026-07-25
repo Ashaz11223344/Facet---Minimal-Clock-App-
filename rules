@@ -44,3 +44,14 @@
 
 ## 6. Scope Rule
 - If a request is prefixed with `(global)` or `(for both)`, apply it to both codebases while strictly maintaining the desktop-only and website-only constraints above. Otherwise, restrict desktop features strictly to desktop and website features strictly to website.
+
+## 7. Windows Desktop Widgets Integration (Desktop Application ONLY)
+- **Desktop Version**:
+  - Header toolbar features a Desktop Widgets manager button (`widgets` icon).
+  - Opens Widget Manager Modal with 3 tabs (*Available Widgets*, *My Widgets*, *Settings*).
+  - Supports widget live preview and pinning widgets to Windows desktop as standalone frameless, always-on-top transparent windows.
+  - Supports 4 size presets: 1:1 (Square, 300×300px), 3:2 (Landscape, 450×300px), 2:3 (Portrait, 300×450px), and 16:9 (Widescreen, 480×270px).
+  - Supports live customization (Clock Mode: Analog/Digital/Both, Show Seconds, 12h/24h, Palette selection, Opacity 0–100%, and Position Lock).
+  - Widget state and preferences persist via `localStorage` (`clock_pinned_widgets`, `clock_widget_settings`, `clock_widget_favorites`).
+- **Website Version**:
+  - Windows Desktop Widgets feature, Widget Manager button, and customizer modals are completely hidden and disabled.
