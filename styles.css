@@ -2566,6 +2566,29 @@ body.light-mode .web-welcome-banner {
 
 /* ==================== WINDOWS DESKTOP WIDGETS (DESKTOP ONLY) ==================== */
 
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.hidden {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 .widget-manager-btn {
   display: flex;
   align-items: center;

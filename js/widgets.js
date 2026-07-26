@@ -22,11 +22,6 @@
     }
 
     init() {
-      // Strictly Desktop Only check
-      if (!document.body.classList.contains('is-desktop-app') && !this.isDesktop) {
-        return;
-      }
-
       this.cacheElements();
       this.bindEvents();
       this.updatePinnedBadge();
