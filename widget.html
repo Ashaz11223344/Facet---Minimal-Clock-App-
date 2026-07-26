@@ -6,15 +6,20 @@
   <title>Facet Clock Widget</title>
   <link rel="stylesheet" href="styles.css">
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     html, body {
       width: 100%;
       height: 100%;
-      margin: 0;
-      padding: 0;
       overflow: hidden;
       background: transparent !important;
-      -webkit-app-region: drag; /* Allows dragging widget window around on desktop */
+      -webkit-app-region: drag;
       user-select: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     
     .widget-container {
@@ -23,9 +28,35 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-sizing: border-box;
-      padding: 12px;
+      padding: 10px;
       position: relative;
+      background: rgba(20, 20, 24, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      animation: widgetSpawnFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes widgetSpawnFade {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    body:hover .widget-container {
+      border-color: rgba(255, 255, 255, 0.22);
+      cursor: grab;
+    }
+
+    body:active .widget-container {
+      cursor: grabbing;
     }
 
     .widget-clock-stage {
@@ -37,7 +68,6 @@
       position: relative;
     }
 
-    /* Interactive elements can opt-out of dragging if needed */
     .no-drag {
       -webkit-app-region: no-drag;
     }
@@ -98,3 +128,4 @@
   </script>
 </body>
 </html>
+
