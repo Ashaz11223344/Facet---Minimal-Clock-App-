@@ -51,8 +51,15 @@
   - Opens streamlined minimal Widget Manager Modal allowing size selection, pinning, live preview, and customization.
   - Supports widget live preview and pinning widgets to Windows desktop as standalone frameless, always-on-top transparent windows.
   - Supports 4 size presets: 1:1 (Square, 300×300px), 3:2 (Landscape, 450×300px), 2:3 (Portrait, 300×450px), and 16:9 (Widescreen, 480×270px).
-  - Supports live customization (Clock Mode: Analog/Digital/Both, Show Seconds, 12h/24h, Palette selection, Opacity 0–100%, and Position Lock).
+  - Supports live customization (Clock Mode: Analog/Digital/Both, Show Seconds, 12h/24h, Palette selection, Opacity 0–100%, Transparent Background, and Position Lock).
   - **Independent Lifecycle**: Pinned desktop widgets run independently in Electron main process (`main.js`). Closing the main app window does NOT close pinned widgets.
   - **Auto-Restoration & Storage**: Widget state and screen positions (`x`, `y`, `width`, `height`) persist via `clock-widgets.json` in Electron `userData`. On app launch, all active widgets automatically restore at their exact saved screen positions.
 - **Website Version**:
   - Windows Desktop Widgets feature, Widget Manager button, and customizer modals are completely hidden and disabled.
+
+## 8. Windows Native Widget Board & Desktop Widget Architecture (Desktop Application ONLY)
+- **Desktop Version**:
+  - Supports Desktop Floating Glass Widgets (Electron standalone windows with wallpaper blending, custom opacity, and position lock).
+  - Optional WinUI 3 / Windows App SDK Provider integration (`windows.widgetProvider` manifest extension) for native Windows 11 Widget Board Dashboard support.
+- **Website Version**:
+  - Completely excluded from web deployments.
