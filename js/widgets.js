@@ -63,6 +63,7 @@
       this.custSeconds = document.getElementById('w-cust-seconds');
       this.custFormat = document.getElementById('w-cust-format');
       this.custPalette = document.getElementById('w-cust-palette');
+      this.custRemoveBg = document.getElementById('w-cust-remove-bg');
       this.custOpacity = document.getElementById('w-cust-opacity');
       this.opacityValText = document.getElementById('w-opacity-val');
       this.custSize = document.getElementById('w-cust-size');
@@ -347,6 +348,7 @@
       if (this.custMode) this.custMode.value = cust.clockMode || 'analog';
       if (this.custSeconds) this.custSeconds.checked = cust.showSeconds !== false;
       if (this.custFormat) this.custFormat.value = cust.displayFormat || '24-hour';
+      if (this.custRemoveBg) this.custRemoveBg.checked = !!cust.transparentBg;
       if (this.custOpacity) {
         const opPct = Math.round((cust.opacity || 1.0) * 100);
         this.custOpacity.value = opPct;
@@ -409,6 +411,7 @@
         showSeconds: this.custSeconds ? this.custSeconds.checked : true,
         displayFormat: this.custFormat ? this.custFormat.value : '24-hour',
         palette: this.custPalette ? this.custPalette.value : 'default',
+        transparentBg: this.custRemoveBg ? this.custRemoveBg.checked : false,
         opacity: opVal,
         locked: this.custLockPos ? this.custLockPos.checked : false
       };
@@ -431,6 +434,7 @@
       if (this.custMode) this.custMode.value = 'analog';
       if (this.custSeconds) this.custSeconds.checked = true;
       if (this.custFormat) this.custFormat.value = '24-hour';
+      if (this.custRemoveBg) this.custRemoveBg.checked = false;
       if (this.custOpacity) {
         this.custOpacity.value = 100;
         if (this.opacityValText) this.opacityValText.textContent = '100%';
