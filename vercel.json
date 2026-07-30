@@ -4,10 +4,15 @@
   "outputDirectory": ".",
   "installCommand": null,
   "framework": null,
-  "routes": [
+  "headers": [
     {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/(favicon.ico|logo_circle.png|icon.png|manifest.json)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }

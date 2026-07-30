@@ -42,6 +42,8 @@
       "logo.png",
       "logo_circle.png",
       "logo.ico",
+      "favicon.ico",
+      "icon.png",
       "palettes.facet",
       "color-themes.facet",
       "js/**/*",

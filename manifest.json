@@ -2,15 +2,27 @@
   "name": "Facet — Minimal Clock",
   "short_name": "Facet",
   "description": "An elegant, distraction-free minimal clock web application.",
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#0b0c0e",
   "theme_color": "#0b0c0e",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "logo_circle.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo_circle.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
     }
   ]
 }

@@ -37,6 +37,8 @@ setup_wizard_out/
 # Visual previews
 *.png
 !logo.png
+!logo_circle.png
+!icon.png
 
 # Keep core Electron scripts and icons
 !main.js
@@ -44,3 +46,4 @@ setup_wizard_out/
 !package.json
 !package-lock.json
 !logo.ico
+!favicon.ico
