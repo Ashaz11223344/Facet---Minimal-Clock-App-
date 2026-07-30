@@ -40,6 +40,7 @@
   - Launches directly to the clock without guides.
 - **Website Version**:
   - Slides in a premium Welcome Banner after 2.5 seconds advising the user on control keys.
+  - Features high-contrast glass typography and clear accent highlighting for maximum legibility on all themes.
   - Includes a "Don't show again" checkbox saved in `localStorage` to permanently dismiss the tip on future visits.
 
 ## 6. Scope Rule

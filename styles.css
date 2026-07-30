@@ -2455,7 +2455,7 @@ body.is-mini-widget .analog-clock-svg {
   display: none !important;
 }
 
-/* Web Welcome Tip Banner (Website Only) */
+/* Web Welcome Banner (Website Only) */
 .web-welcome-banner {
   position: fixed;
   bottom: 24px;
@@ -2464,16 +2464,17 @@ body.is-mini-widget .analog-clock-svg {
   z-index: 10000;
   width: 92%;
   max-width: 500px;
-  background: rgba(18, 18, 18, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(22, 24, 30, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 16px;
   padding: 16px 20px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
   opacity: 0;
   pointer-events: none;
+  color: #ffffff;
 }
 
 .web-welcome-banner.visible {
@@ -2483,10 +2484,12 @@ body.is-mini-widget .analog-clock-svg {
 }
 
 /* Light Mode Overrides for Banner */
-body.light-mode .web-welcome-banner {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+body.light-mode .web-welcome-banner,
+[data-theme-mode="light"] .web-welcome-banner {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+  color: #0f172a;
 }
 
 .welcome-banner-content {
@@ -2507,61 +2510,106 @@ body.light-mode .web-welcome-banner {
 
 .welcome-title {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   margin: 0 0 4px 0;
-  color: var(--fg);
+  color: #ffffff;
+}
+
+body.light-mode .welcome-title,
+[data-theme-mode="light"] .welcome-title {
+  color: #0f172a;
 }
 
 .welcome-desc {
   font-size: 0.85rem;
   margin: 0;
-  color: var(--fg);
-  opacity: 0.8;
-  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.45;
+}
+
+.welcome-desc strong {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+body.light-mode .welcome-desc,
+[data-theme-mode="light"] .welcome-desc {
+  color: #334155;
+}
+
+body.light-mode .welcome-desc strong,
+[data-theme-mode="light"] .welcome-desc strong {
+  color: #0284c7;
 }
 
 .welcome-actions {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
+  gap: 10px;
   align-self: stretch;
   justify-content: space-between;
 }
 
 .welcome-dismiss-btn {
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  color: var(--fg);
-  opacity: 0.5;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
   cursor: pointer;
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
-  transition: opacity 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .welcome-dismiss-btn:hover {
-  opacity: 0.9;
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #f87171;
+  transform: scale(1.1);
+}
+
+body.light-mode .welcome-dismiss-btn,
+[data-theme-mode="light"] .welcome-dismiss-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #64748b;
+}
+
+body.light-mode .welcome-dismiss-btn:hover,
+[data-theme-mode="light"] .welcome-dismiss-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
 }
 
 .dont-show-again {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.75rem;
-  color: var(--fg);
-  opacity: 0.65;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.78);
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
 }
 
+body.light-mode .dont-show-again,
+[data-theme-mode="light"] .dont-show-again {
+  color: #475569;
+}
+
 .dont-show-again input[type="checkbox"] {
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   cursor: pointer;
-  accent-color: var(--accent);
+  accent-color: #16B399;
 }
 
 /* ==================== WINDOWS DESKTOP WIDGETS (DESKTOP ONLY) ==================== */
