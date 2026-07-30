@@ -401,6 +401,41 @@
 
         <!-- Color Swatches Grid -->
         <div id="preview-swatches" class="preview-swatches"></div>
+
+        <!-- Background FX & Clock Font Selection Row -->
+        <div class="custom-select-row preview-select-row">
+          <div class="select-field">
+            <label>Background FX</label>
+            <div id="preview-bg-fx-select" class="custom-select full-width-cs">
+              <button class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="cs-value">Gradient Mesh</span>
+                <span class="cs-arrow">▾</span>
+              </button>
+              <ul class="cs-options hidden" role="listbox">
+                <li class="cs-option selected" data-value="mesh">Gradient Mesh</li>
+                <li class="cs-option" data-value="aurora">Interactive Aurora</li>
+                <li class="cs-option" data-value="starfield">Starfield Particles</li>
+                <li class="cs-option" data-value="off">Off (Solid)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="select-field">
+            <label>Clock Font</label>
+            <div id="preview-font-select" class="custom-select full-width-cs">
+              <button class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="cs-value">Sans-Serif (Inter)</span>
+                <span class="cs-arrow">▾</span>
+              </button>
+              <ul class="cs-options hidden" role="listbox">
+                <li class="cs-option selected" data-value="sans">Sans-Serif (Inter)</li>
+                <li class="cs-option" data-value="mono">Monospace (Space Mono)</li>
+                <li class="cs-option" data-value="clay">Puffy 3D (Nunito)</li>
+                <li class="cs-option" data-value="retro">Retro 7-Segment (VT323)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="preview-actions">

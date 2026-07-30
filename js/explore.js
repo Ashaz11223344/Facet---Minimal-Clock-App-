@@ -18,6 +18,8 @@ window.ExploreEngine = (function () {
   let activePreviewPalette = null;
   let previewMode = 'analog'; // 'analog' | 'digital'
   let previewTimer = null;
+  let previewBgFx = 'mesh';
+  let previewFont = 'sans';
 
   let searchDebounceTimer = null;
 
@@ -339,8 +341,16 @@ window.ExploreEngine = (function () {
       crt: false
     };
 
-    if (window.ClockEngine && typeof window.ClockEngine.setCustomPalette === 'function') {
-      window.ClockEngine.setCustomPalette(customPaletteObj);
+    if (window.ClockEngine) {
+      if (typeof window.ClockEngine.setCustomPalette === 'function') {
+        window.ClockEngine.setCustomPalette(customPaletteObj);
+      }
+      if (typeof window.ClockEngine.setBgFx === 'function') {
+        window.ClockEngine.setBgFx(previewBgFx);
+      }
+      if (typeof window.ClockEngine.setFontFamily === 'function') {
+        window.ClockEngine.setFontFamily(previewFont);
+      }
     }
 
     saveCurrentAppliedPalette(palette);
@@ -543,6 +553,12 @@ window.ExploreEngine = (function () {
   // --------------------------------------------------------------------------
   function openPreviewModal(palette) {
     activePreviewPalette = palette;
+    if (window.ClockEngine && typeof window.ClockEngine.getState === 'function') {
+      const st = window.ClockEngine.getState();
+      previewBgFx = st.bgFx || 'mesh';
+      previewFont = st.fontFamily || 'sans';
+    }
+
     const previewModal = document.getElementById('palette-preview-modal');
     if (!previewModal) return;
 
@@ -579,6 +595,7 @@ window.ExploreEngine = (function () {
     }
 
     updatePreviewModeControl();
+    updatePreviewDropdownsUI();
 
     previewModal.classList.remove('hidden');
     previewModal.setAttribute('aria-hidden', 'false');
@@ -616,6 +633,30 @@ window.ExploreEngine = (function () {
     }
   }
 
+  function updatePreviewDropdownsUI() {
+    const bgFxSelect = document.getElementById('preview-bg-fx-select');
+    if (bgFxSelect) {
+      const triggerVal = bgFxSelect.querySelector('.cs-value');
+      const fxMap = { mesh: 'Gradient Mesh', aurora: 'Interactive Aurora', starfield: 'Starfield Particles', off: 'Off (Solid)' };
+      if (triggerVal) triggerVal.textContent = fxMap[previewBgFx] || 'Gradient Mesh';
+
+      bgFxSelect.querySelectorAll('.cs-option').forEach(opt => {
+        opt.classList.toggle('selected', opt.dataset.value === previewBgFx);
+      });
+    }
+
+    const fontSelect = document.getElementById('preview-font-select');
+    if (fontSelect) {
+      const triggerVal = fontSelect.querySelector('.cs-value');
+      const fontMap = { sans: 'Sans-Serif (Inter)', mono: 'Monospace (Space Mono)', clay: 'Puffy 3D (Nunito)', retro: 'Retro 7-Segment (VT323)' };
+      if (triggerVal) triggerVal.textContent = fontMap[previewFont] || 'Sans-Serif (Inter)';
+
+      fontSelect.querySelectorAll('.cs-option').forEach(opt => {
+        opt.classList.toggle('selected', opt.dataset.value === previewFont);
+      });
+    }
+  }
+
   function renderLivePreviewClock() {
     const stage = document.getElementById('preview-stage');
     if (!stage || !activePreviewPalette) return;
@@ -626,6 +667,11 @@ window.ExploreEngine = (function () {
     const accent = activePreviewPalette.colors.accent || activePreviewPalette.colors.primary || '#ffd152';
     const glow = activePreviewPalette.colors.tertiary || activePreviewPalette.colors.accent || activePreviewPalette.colors.primary || 'transparent';
     const cardBg = activePreviewPalette.colors.surface || 'rgba(255, 255, 255, 0.1)';
+
+    let fontStack = 'var(--font-sans)';
+    if (previewFont === 'mono') fontStack = 'var(--font-mono)';
+    else if (previewFont === 'clay') fontStack = 'var(--font-clay)';
+    else if (previewFont === 'retro') fontStack = 'var(--font-retro)';
 
     const tempPalette = {
       name: activePreviewPalette.name,
@@ -649,6 +695,8 @@ window.ExploreEngine = (function () {
     stage.style.setProperty('--card-bg', cardBg);
     stage.style.setProperty('--card-border', accent + '33');
     stage.style.setProperty('--glow-color', glow);
+    stage.style.setProperty('--clock-font', fontStack);
+    stage.style.fontFamily = fontStack;
 
     if (window.ClockRenderers) {
       if (previewMode === 'analog') {
@@ -859,6 +907,81 @@ window.ExploreEngine = (function () {
         renderLivePreviewClock();
       });
     }
+
+    // Live Preview Custom Select Dropdowns (Background FX & Clock Font)
+    const previewBgFxSelect = document.getElementById('preview-bg-fx-select');
+    const previewFontSelect = document.getElementById('preview-font-select');
+
+    function closeExplorePreviewSelects() {
+      if (previewBgFxSelect) {
+        previewBgFxSelect.classList.remove('open', 'open-upwards');
+        const m = previewBgFxSelect.querySelector('.cs-options');
+        if (m) m.classList.add('hidden');
+      }
+      if (previewFontSelect) {
+        previewFontSelect.classList.remove('open', 'open-upwards');
+        const m = previewFontSelect.querySelector('.cs-options');
+        if (m) m.classList.add('hidden');
+      }
+    }
+
+    if (previewBgFxSelect) {
+      const trig = previewBgFxSelect.querySelector('.cs-trigger');
+      const menu = previewBgFxSelect.querySelector('.cs-options');
+      if (trig && menu) {
+        trig.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = previewBgFxSelect.classList.contains('open');
+          closeExplorePreviewSelects();
+          if (!isOpen) {
+            previewBgFxSelect.classList.add('open-upwards', 'open');
+            menu.classList.remove('hidden');
+          }
+        });
+
+        menu.addEventListener('click', (e) => {
+          const item = e.target.closest('.cs-option');
+          if (item) {
+            e.stopPropagation();
+            previewBgFx = item.dataset.value;
+            updatePreviewDropdownsUI();
+            renderLivePreviewClock();
+            closeExplorePreviewSelects();
+          }
+        });
+      }
+    }
+
+    if (previewFontSelect) {
+      const trig = previewFontSelect.querySelector('.cs-trigger');
+      const menu = previewFontSelect.querySelector('.cs-options');
+      if (trig && menu) {
+        trig.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = previewFontSelect.classList.contains('open');
+          closeExplorePreviewSelects();
+          if (!isOpen) {
+            previewFontSelect.classList.add('open-upwards', 'open');
+            menu.classList.remove('hidden');
+          }
+        });
+
+        menu.addEventListener('click', (e) => {
+          const item = e.target.closest('.cs-option');
+          if (item) {
+            e.stopPropagation();
+            previewFont = item.dataset.value;
+            updatePreviewDropdownsUI();
+            renderLivePreviewClock();
+            closeExplorePreviewSelects();
+          }
+        });
+      }
+    }
+
+    document.addEventListener('click', () => {
+      closeExplorePreviewSelects();
+    });
 
     // Preview Modal Actions
     const previewClose = document.getElementById('preview-modal-close');
