@@ -934,7 +934,7 @@ window.ExploreEngine = (function () {
           const isOpen = previewBgFxSelect.classList.contains('open');
           closeExplorePreviewSelects();
           if (!isOpen) {
-            previewBgFxSelect.classList.add('open-upwards', 'open');
+            previewBgFxSelect.classList.add('open');
             menu.classList.remove('hidden');
           }
         });
@@ -961,7 +961,7 @@ window.ExploreEngine = (function () {
           const isOpen = previewFontSelect.classList.contains('open');
           closeExplorePreviewSelects();
           if (!isOpen) {
-            previewFontSelect.classList.add('open-upwards', 'open');
+            previewFontSelect.classList.add('open');
             menu.classList.remove('hidden');
           }
         });
