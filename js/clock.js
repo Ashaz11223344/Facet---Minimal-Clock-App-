@@ -6,11 +6,11 @@
 
 window.ClockEngine = (function() {
   let currentState = {
-    mode: 'analog',          // 'analog' | 'digital'
-    variationIndex: 0,       // Default to A1 (Classic Minimal)
-    subVariantIndex: 0,      // 0: Obsidian Minimal
-    bgFx: 'pulse',           // 'pulse' (Zen Pulse Glow - Meditative breathing background)
-    fontFamily: 'outfit',    // 'outfit' (Geometric Sans - Ultra-clean minimal typography)
+    mode: 'digital',         // Default to Digital
+    variationIndex: 2,       // Default to D3 (Stacked Digital)
+    subVariantIndex: 0,      // Default to 0 (Light palette)
+    bgFx: 'off',             // Clean light background
+    fontFamily: 'sans',      // Clean Inter typography
     customPalette: null      // { bg, fg, accent, glow }
   };
 
