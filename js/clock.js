@@ -166,9 +166,14 @@ window.ClockEngine = (function() {
     // Animated Mesh Background
     const bgMesh = document.getElementById('bg-mesh');
     if (bgMesh) {
-      if (currentState.bgFx === 'mesh' && palette.mesh && palette.mesh !== 'none') {
-        root.style.setProperty('--mesh-bg', palette.mesh);
-        bgMesh.style.opacity = '0.6';
+      if (currentState.bgFx === 'mesh') {
+        const accentCol = palette.accent || '#3b82f6';
+        const fgCol = palette.fg || '#ffffff';
+        const meshBg = (palette.mesh && palette.mesh !== 'none')
+          ? palette.mesh
+          : `radial-gradient(at 15% 15%, ${hexToRgba(accentCol, 0.35)} 0px, transparent 55%), radial-gradient(at 85% 85%, ${hexToRgba(fgCol, 0.22)} 0px, transparent 55%), radial-gradient(at 50% 50%, ${hexToRgba(accentCol, 0.18)} 0px, transparent 70%)`;
+        root.style.setProperty('--mesh-bg', meshBg);
+        bgMesh.style.opacity = '1';
       } else {
         bgMesh.style.opacity = '0';
       }
@@ -194,6 +199,26 @@ window.ClockEngine = (function() {
     if (customNote) {
       customNote.textContent = `Changing colors for ${variation.name}. Design system styling remains active.`;
     }
+  }
+
+  // Helper function to safely convert hex/rgb strings to valid canvas rgba()
+  function hexToRgba(colorStr, alpha = 1) {
+    if (!colorStr) return `rgba(59, 130, 246, ${alpha})`;
+    if (colorStr.startsWith('rgba') || colorStr.startsWith('rgb')) {
+      const parts = colorStr.match(/\d+/g);
+      if (parts && parts.length >= 3) {
+        return `rgba(${parts[0]}, ${parts[1]}, ${parts[2]}, ${alpha})`;
+      }
+    }
+    let hex = colorStr.replace('#', '');
+    if (hex.length === 3) {
+      hex = hex.split('').map(x => x + x).join('');
+    }
+    if (hex.length === 6) {
+      const num = parseInt(hex, 16);
+      return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
+    }
+    return `rgba(255, 255, 255, ${alpha})`;
   }
 
   // --------------------------------------------------------------------------
@@ -241,7 +266,7 @@ window.ClockEngine = (function() {
       auraPhase += 0.008;
       const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
       grad.addColorStop(0, 'transparent');
-      grad.addColorStop(0.5, accent + '22');
+      grad.addColorStop(0.5, hexToRgba(accent, 0.28));
       grad.addColorStop(1, 'transparent');
 
       ctx.fillStyle = grad;
@@ -272,16 +297,16 @@ window.ClockEngine = (function() {
       const pulseRadius = Math.min(canvas.width, canvas.height) * (0.35 + Math.sin(auraPhase) * 0.06);
       const grad = ctx.createRadialGradient(
         canvas.width / 2, canvas.height / 2, 0,
-        canvas.width / 2, canvas.height / 2, pulseRadius
+        canvas.width / 2, canvas.height / 2, Math.max(10, pulseRadius)
       );
-      grad.addColorStop(0, accent + '33');
-      grad.addColorStop(0.6, accent + '0a');
+      grad.addColorStop(0, hexToRgba(accent, 0.4));
+      grad.addColorStop(0.6, hexToRgba(accent, 0.08));
       grad.addColorStop(1, 'transparent');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     } else if (currentState.bgFx === 'constellation') {
       ctx.fillStyle = accent;
-      ctx.strokeStyle = accent + '33';
+      ctx.strokeStyle = hexToRgba(accent, 0.25);
       ctx.lineWidth = 0.8;
       for (let i = 0; i < stars.length; i++) {
         const s1 = stars[i];
@@ -310,11 +335,11 @@ window.ClockEngine = (function() {
     } else if (currentState.bgFx === 'vignette') {
       const maxR = Math.max(canvas.width, canvas.height) * 0.75;
       const grad = ctx.createRadialGradient(
-        canvas.width / 2, canvas.height / 2, maxR * 0.35,
-        canvas.width / 2, canvas.height / 2, maxR
+        canvas.width / 2, canvas.height / 2, maxR * 0.25,
+        canvas.width / 2, canvas.height / 2, Math.max(20, maxR)
       );
       grad.addColorStop(0, 'transparent');
-      grad.addColorStop(0.7, 'rgba(0, 0, 0, 0.45)');
+      grad.addColorStop(0.65, 'rgba(0, 0, 0, 0.45)');
       grad.addColorStop(1, 'rgba(0, 0, 0, 0.85)');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
