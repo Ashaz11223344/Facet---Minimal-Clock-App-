@@ -167,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeAllCustomSelects() {
     document.querySelectorAll('.custom-select').forEach(cs => {
       cs.classList.remove('open');
+      cs.classList.remove('open-upwards');
       const menu = cs.querySelector('.cs-options');
       if (menu) menu.classList.add('hidden');
     });
@@ -182,6 +183,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const isOpen = containerEl.classList.contains('open');
       closeAllCustomSelects();
       if (!isOpen) {
+        const rect = containerEl.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        if (spaceBelow < 220 || containerEl.closest('.custom-select-row')) {
+          containerEl.classList.add('open-upwards');
+        } else {
+          containerEl.classList.remove('open-upwards');
+        }
         containerEl.classList.add('open');
         optionsMenu.classList.remove('hidden');
       }
