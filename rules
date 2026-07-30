@@ -47,8 +47,8 @@
 
 ## 7. Windows Desktop Widgets Integration (Desktop Application ONLY)
 - **Desktop Version**:
-  - Header toolbar features a Desktop Widgets manager button (`widgets` icon).
-  - Opens streamlined minimal Widget Manager Modal allowing size selection, pinning, live preview, and customization.
+  - Header toolbar features a Desktop Widgets manager button (`widgets` icon) marked with a **BETA** badge.
+  - Opens streamlined minimal Widget Manager Modal featuring a **BETA** indicator and a sleek top-right close button (`.close-btn`).
   - Supports widget live preview and pinning widgets to Windows desktop as standalone frameless, always-on-top transparent windows.
   - Supports 4 size presets: 1:1 (Square, 300×300px), 3:2 (Landscape, 450×300px), 2:3 (Portrait, 300×450px), and 16:9 (Widescreen, 480×270px).
   - Supports live customization (Clock Mode: Analog/Digital/Both, Show Seconds, 12h/24h, Palette selection, Opacity 0–100%, Transparent Background, and Position Lock).

@@ -2597,6 +2597,7 @@ body.light-mode .web-welcome-banner {
   height: 36px;
   border-radius: 50%;
   border: none;
+  position: relative;
   background: transparent;
   color: var(--fg);
   cursor: pointer;
@@ -2608,9 +2609,98 @@ body.light-mode .web-welcome-banner {
   color: #16B399;
 }
 
+/* BETA Badge on Toolbar Button */
+.btn-beta-badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #000;
+  font-size: 0.55rem;
+  font-weight: 900;
+  padding: 1px 4px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+  text-transform: uppercase;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* Modal Header & Top-Right Close Button */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 20px;
+  padding-right: 40px;
+}
+
+.modal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-title-group h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+}
+
 .modal-icon-symbol {
   font-size: 1.5rem;
   color: #16B399;
+}
+
+/* BETA Badge inside Modal Title Header */
+.modal-beta-badge {
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 12px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+}
+
+/* Sleek Top-Right Modal Close Button */
+.close-btn {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #a0aec0;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+}
+
+.close-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #f87171;
+  transform: scale(1.08);
+}
+
+.close-btn:active {
+  transform: scale(0.95);
 }
 
 .widget-modal-card,
@@ -2625,6 +2715,7 @@ body.light-mode .web-welcome-banner {
   padding: 24px;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
   color: #fff;
+  position: relative;
 }
 
 /* Tabs */
