@@ -320,7 +320,7 @@ window.ExploreEngine = (function () {
   function applyPaletteToClockEngine(palette, showToastMessage = true) {
     if (!palette || !palette.colors) return;
 
-    const bg = palette.colors.background || palette.colors.secondary || '#0b0c0e';
+    const bg = palette.colors.background || palette.colors.bg || palette.colors.secondary || '#0b0c0e';
     const fg = palette.colors.primary || '#eaeaea';
     const accent = palette.colors.accent || palette.colors.primary || '#ffd152';
     const glow = palette.colors.tertiary || palette.colors.accent || palette.colors.primary || 'transparent';
@@ -621,9 +621,11 @@ window.ExploreEngine = (function () {
     if (!stage || !activePreviewPalette) return;
 
     const now = new Date();
-    const bg = activePreviewPalette.colors.background || activePreviewPalette.colors.secondary || '#0b0c0e';
+    const bg = activePreviewPalette.colors.background || activePreviewPalette.colors.bg || activePreviewPalette.colors.secondary || '#0b0c0e';
     const fg = activePreviewPalette.colors.primary || '#eaeaea';
     const accent = activePreviewPalette.colors.accent || activePreviewPalette.colors.primary || '#ffd152';
+    const glow = activePreviewPalette.colors.tertiary || activePreviewPalette.colors.accent || activePreviewPalette.colors.primary || 'transparent';
+    const cardBg = activePreviewPalette.colors.surface || 'rgba(255, 255, 255, 0.1)';
 
     const tempPalette = {
       name: activePreviewPalette.name,
@@ -631,16 +633,22 @@ window.ExploreEngine = (function () {
       fg: fg,
       accent: accent,
       subtle: fg + '66',
-      cardBg: activePreviewPalette.colors.surface || 'rgba(255,255,255,0.1)',
+      cardBg: cardBg,
       cardBorder: accent + '33',
-      glow: activePreviewPalette.colors.tertiary || accent
+      glow: glow,
+      mesh: 'none',
+      crt: false
     };
 
     stage.style.backgroundColor = bg;
+    stage.style.color = fg;
     stage.style.setProperty('--bg', bg);
     stage.style.setProperty('--fg', fg);
     stage.style.setProperty('--accent', accent);
     stage.style.setProperty('--subtle', fg + '66');
+    stage.style.setProperty('--card-bg', cardBg);
+    stage.style.setProperty('--card-border', accent + '33');
+    stage.style.setProperty('--glow-color', glow);
 
     if (window.ClockRenderers) {
       if (previewMode === 'analog') {

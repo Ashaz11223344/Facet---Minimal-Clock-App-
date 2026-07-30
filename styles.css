@@ -1861,23 +1861,28 @@ body[data-morphism="brutalism"] .cs-option:hover {
   width: 100% !important;
   height: 100% !important;
   padding: 0 16px !important;
+  color: var(--fg) !important;
 }
 
 #preview-stage .digital-d1,
 #preview-stage .digital-d2 .d2-main,
 #preview-stage .digital-d3,
+#preview-stage .digital-d4,
 #preview-stage .digital-d5,
 #preview-stage .digital-d6,
+#preview-stage .digital-d7,
 #preview-stage .digital-d8,
 #preview-stage .digital-d9,
 #preview-stage .digital-d10 {
   font-size: 3.2rem !important;
   font-weight: 300 !important;
   letter-spacing: 0.04em !important;
+  color: var(--fg) !important;
 }
 
 #preview-stage .d2-sec {
   font-size: 1.2rem !important;
+  color: var(--fg) !important;
 }
 
 .preview-info {
