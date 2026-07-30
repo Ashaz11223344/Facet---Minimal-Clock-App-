@@ -20,8 +20,12 @@
   /* Typography Stacks */
   --font-mono: 'Space Mono', 'SF Mono', 'Fira Code', monospace;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-outfit: 'Outfit', -apple-system, sans-serif;
   --font-clay: 'Nunito', 'Inter', sans-serif;
   --font-retro: 'VT323', monospace;
+  --font-playfair: 'Playfair Display', Georgia, serif;
+  --font-chakra: 'Chakra Petch', sans-serif;
+  --font-bebas: 'Bebas Neue', cursive, sans-serif;
   --clock-font: var(--font-sans);
 }
 

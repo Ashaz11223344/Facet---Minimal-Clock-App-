@@ -296,7 +296,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sync Background FX and Font custom dropdown triggers
     if (customBgFxSelect) {
       const triggerVal = customBgFxSelect.querySelector('.cs-value');
-      const fxMap = { mesh: 'Gradient Mesh', aurora: 'Interactive Aurora', starfield: 'Starfield Particles', off: 'Off (Solid)' };
+      const fxMap = {
+        mesh: 'Gradient Mesh',
+        aurora: 'Interactive Aurora',
+        starfield: 'Starfield Particles',
+        pulse: 'Zen Pulse Glow',
+        constellation: 'Cosmic Grid',
+        vignette: 'Cinematic Vignette',
+        off: 'Off (Solid)'
+      };
       if (triggerVal) triggerVal.textContent = fxMap[state.bgFx] || 'Gradient Mesh';
 
       customBgFxSelect.querySelectorAll('.cs-option').forEach(opt => {
@@ -306,7 +314,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (customFontSelectCustom) {
       const triggerVal = customFontSelectCustom.querySelector('.cs-value');
-      const fontMap = { sans: 'Sans-Serif (Inter)', mono: 'Monospace (Space Mono)', clay: 'Puffy 3D (Nunito)', retro: 'Retro 7-Segment (VT323)' };
+      const fontMap = {
+        sans: 'Sans-Serif (Inter)',
+        outfit: 'Geometric Sans (Outfit)',
+        mono: 'Monospace (Space Mono)',
+        clay: 'Puffy 3D (Nunito)',
+        retro: 'Retro 7-Segment (VT323)',
+        playfair: 'Editorial Serif (Playfair)',
+        chakra: 'Tech Minimal (Chakra)',
+        bebas: 'Condensed Bold (Bebas)'
+      };
       if (triggerVal) triggerVal.textContent = fontMap[state.fontFamily] || 'Sans-Serif (Inter)';
 
       customFontSelectCustom.querySelectorAll('.cs-option').forEach(opt => {

@@ -154,9 +154,13 @@ window.ClockEngine = (function() {
 
     // Font Family Selection
     let fontStack = 'var(--font-sans)';
-    if (currentState.fontFamily === 'mono') fontStack = 'var(--font-mono)';
+    if (currentState.fontFamily === 'outfit') fontStack = 'var(--font-outfit)';
+    else if (currentState.fontFamily === 'mono') fontStack = 'var(--font-mono)';
     else if (currentState.fontFamily === 'clay') fontStack = 'var(--font-clay)';
     else if (currentState.fontFamily === 'retro') fontStack = 'var(--font-retro)';
+    else if (currentState.fontFamily === 'playfair') fontStack = 'var(--font-playfair)';
+    else if (currentState.fontFamily === 'chakra') fontStack = 'var(--font-chakra)';
+    else if (currentState.fontFamily === 'bebas') fontStack = 'var(--font-bebas)';
     root.style.setProperty('--clock-font', fontStack);
 
     // Animated Mesh Background
@@ -193,7 +197,7 @@ window.ClockEngine = (function() {
   }
 
   // --------------------------------------------------------------------------
-  // BACKGROUND FX CANVAS ENGINE (Aurora & Starfield Particles)
+  // BACKGROUND FX CANVAS ENGINE (Aurora, Starfield, Zen Pulse, Cosmic Grid, Vignette)
   // --------------------------------------------------------------------------
   function initStars(width, height) {
     stars = [];
@@ -263,6 +267,57 @@ window.ClockEngine = (function() {
         ctx.fill();
       });
       ctx.globalAlpha = 1.0;
+    } else if (currentState.bgFx === 'pulse') {
+      auraPhase += 0.012;
+      const pulseRadius = Math.min(canvas.width, canvas.height) * (0.35 + Math.sin(auraPhase) * 0.06);
+      const grad = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height / 2, 0,
+        canvas.width / 2, canvas.height / 2, pulseRadius
+      );
+      grad.addColorStop(0, accent + '33');
+      grad.addColorStop(0.6, accent + '0a');
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    } else if (currentState.bgFx === 'constellation') {
+      ctx.fillStyle = accent;
+      ctx.strokeStyle = accent + '33';
+      ctx.lineWidth = 0.8;
+      for (let i = 0; i < stars.length; i++) {
+        const s1 = stars[i];
+        s1.y -= s1.speed * 0.5;
+        if (s1.y < 0) s1.y = canvas.height;
+        ctx.globalAlpha = s1.alpha * 0.75;
+        ctx.beginPath();
+        ctx.arc(s1.x, s1.y, s1.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        for (let j = i + 1; j < stars.length; j++) {
+          const s2 = stars[j];
+          const dx = s1.x - s2.x;
+          const dy = s1.y - s2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 110) {
+            ctx.globalAlpha = (1 - dist / 110) * 0.25;
+            ctx.beginPath();
+            ctx.moveTo(s1.x, s1.y);
+            ctx.lineTo(s2.x, s2.y);
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.globalAlpha = 1.0;
+    } else if (currentState.bgFx === 'vignette') {
+      const maxR = Math.max(canvas.width, canvas.height) * 0.75;
+      const grad = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height / 2, maxR * 0.35,
+        canvas.width / 2, canvas.height / 2, maxR
+      );
+      grad.addColorStop(0, 'transparent');
+      grad.addColorStop(0.7, 'rgba(0, 0, 0, 0.45)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0.85)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     fxAnimFrameId = requestAnimationFrame(renderBgFx);

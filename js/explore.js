@@ -637,7 +637,15 @@ window.ExploreEngine = (function () {
     const bgFxSelect = document.getElementById('preview-bg-fx-select');
     if (bgFxSelect) {
       const triggerVal = bgFxSelect.querySelector('.cs-value');
-      const fxMap = { mesh: 'Gradient Mesh', aurora: 'Interactive Aurora', starfield: 'Starfield Particles', off: 'Off (Solid)' };
+      const fxMap = {
+        mesh: 'Gradient Mesh',
+        aurora: 'Interactive Aurora',
+        starfield: 'Starfield Particles',
+        pulse: 'Zen Pulse Glow',
+        constellation: 'Cosmic Grid',
+        vignette: 'Cinematic Vignette',
+        off: 'Off (Solid)'
+      };
       if (triggerVal) triggerVal.textContent = fxMap[previewBgFx] || 'Gradient Mesh';
 
       bgFxSelect.querySelectorAll('.cs-option').forEach(opt => {
@@ -648,7 +656,16 @@ window.ExploreEngine = (function () {
     const fontSelect = document.getElementById('preview-font-select');
     if (fontSelect) {
       const triggerVal = fontSelect.querySelector('.cs-value');
-      const fontMap = { sans: 'Sans-Serif (Inter)', mono: 'Monospace (Space Mono)', clay: 'Puffy 3D (Nunito)', retro: 'Retro 7-Segment (VT323)' };
+      const fontMap = {
+        sans: 'Sans-Serif (Inter)',
+        outfit: 'Geometric Sans (Outfit)',
+        mono: 'Monospace (Space Mono)',
+        clay: 'Puffy 3D (Nunito)',
+        retro: 'Retro 7-Segment (VT323)',
+        playfair: 'Editorial Serif (Playfair)',
+        chakra: 'Tech Minimal (Chakra)',
+        bebas: 'Condensed Bold (Bebas)'
+      };
       if (triggerVal) triggerVal.textContent = fontMap[previewFont] || 'Sans-Serif (Inter)';
 
       fontSelect.querySelectorAll('.cs-option').forEach(opt => {
@@ -669,9 +686,13 @@ window.ExploreEngine = (function () {
     const cardBg = activePreviewPalette.colors.surface || 'rgba(255, 255, 255, 0.1)';
 
     let fontStack = 'var(--font-sans)';
-    if (previewFont === 'mono') fontStack = 'var(--font-mono)';
+    if (previewFont === 'outfit') fontStack = 'var(--font-outfit)';
+    else if (previewFont === 'mono') fontStack = 'var(--font-mono)';
     else if (previewFont === 'clay') fontStack = 'var(--font-clay)';
     else if (previewFont === 'retro') fontStack = 'var(--font-retro)';
+    else if (previewFont === 'playfair') fontStack = 'var(--font-playfair)';
+    else if (previewFont === 'chakra') fontStack = 'var(--font-chakra)';
+    else if (previewFont === 'bebas') fontStack = 'var(--font-bebas)';
 
     const tempPalette = {
       name: activePreviewPalette.name,
