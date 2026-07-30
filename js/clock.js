@@ -7,10 +7,10 @@
 window.ClockEngine = (function() {
   let currentState = {
     mode: 'analog',          // 'analog' | 'digital'
-    variationIndex: 6,       // Default to A7 (Glassmorphism Analog)
-    subVariantIndex: 0,      // 0, 1, 2
-    bgFx: 'mesh',            // 'mesh' | 'aurora' | 'starfield' | 'off'
-    fontFamily: 'sans',      // 'sans' | 'mono' | 'clay' | 'retro'
+    variationIndex: 0,       // Default to A1 (Classic Minimal)
+    subVariantIndex: 0,      // 0: Obsidian Minimal
+    bgFx: 'pulse',           // 'pulse' (Zen Pulse Glow - Meditative breathing background)
+    fontFamily: 'outfit',    // 'outfit' (Geometric Sans - Ultra-clean minimal typography)
     customPalette: null      // { bg, fg, accent, glow }
   };
 

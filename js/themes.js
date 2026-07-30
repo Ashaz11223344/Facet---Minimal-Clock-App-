@@ -75,7 +75,43 @@ window.THEME_CATALOG = {
 
   // 10 Analog Variations with custom sub-variants
   analog: [
-    { id: 'a1', name: 'Classic Minimal' },
+    // A1 - Classic Minimal
+    {
+      id: 'a1',
+      name: 'Classic Minimal',
+      subVariants: [
+        {
+          name: 'Obsidian Minimal',
+          bg: '#08090b',
+          fg: '#ffffff',
+          accent: '#38bdf8',
+          subtle: 'rgba(255, 255, 255, 0.35)',
+          cardBg: 'rgba(255, 255, 255, 0.05)',
+          cardBorder: 'rgba(255, 255, 255, 0.12)',
+          glow: 'rgba(56, 189, 248, 0.35)'
+        },
+        {
+          name: 'Nordic Snow',
+          bg: '#f8fafc',
+          fg: '#0f172a',
+          accent: '#2563eb',
+          subtle: 'rgba(15, 23, 42, 0.35)',
+          cardBg: 'rgba(255, 255, 255, 0.8)',
+          cardBorder: 'rgba(15, 23, 42, 0.08)',
+          glow: 'rgba(37, 99, 235, 0.25)'
+        },
+        {
+          name: 'Midnight Emerald',
+          bg: '#061412',
+          fg: '#f0fdf4',
+          accent: '#2dd4bf',
+          subtle: 'rgba(240, 253, 244, 0.35)',
+          cardBg: 'rgba(20, 83, 45, 0.2)',
+          cardBorder: 'rgba(45, 212, 191, 0.2)',
+          glow: 'rgba(45, 212, 191, 0.35)'
+        }
+      ]
+    },
     { id: 'a2', name: 'Continuous Sweep' },
     { id: 'a3', name: 'Dot Matrix' },
     { id: 'a4', name: 'Sunburst' },
@@ -255,7 +291,43 @@ window.THEME_CATALOG = {
 
   // 10 Digital Variations with custom sub-variants
   digital: [
-    { id: 'd1', name: 'HH:MM:SS Minimal' },
+    // D1 - HH:MM:SS Minimal
+    {
+      id: 'd1',
+      name: 'HH:MM:SS Minimal',
+      subVariants: [
+        {
+          name: 'Pure Cyber Digital',
+          bg: '#090a0f',
+          fg: '#ffffff',
+          accent: '#38bdf8',
+          subtle: 'rgba(255, 255, 255, 0.35)',
+          cardBg: 'rgba(255, 255, 255, 0.06)',
+          cardBorder: 'rgba(255, 255, 255, 0.15)',
+          glow: 'rgba(56, 189, 248, 0.4)'
+        },
+        {
+          name: 'Monochrome Slate',
+          bg: '#0f172a',
+          fg: '#f8fafc',
+          accent: '#a855f7',
+          subtle: 'rgba(248, 250, 252, 0.35)',
+          cardBg: 'rgba(30, 41, 59, 0.5)',
+          cardBorder: 'rgba(255, 255, 255, 0.12)',
+          glow: 'rgba(168, 85, 247, 0.35)'
+        },
+        {
+          name: 'Japanese Zen',
+          bg: '#121212',
+          fg: '#fef08a',
+          accent: '#f59e0b',
+          subtle: 'rgba(254, 240, 138, 0.35)',
+          cardBg: 'rgba(255, 255, 255, 0.05)',
+          cardBorder: 'rgba(245, 158, 11, 0.2)',
+          glow: 'rgba(245, 158, 11, 0.35)'
+        }
+      ]
+    },
     { id: 'd2', name: 'HH:MM (Seconds Fade)' },
     { id: 'd3', name: 'Stacked Digital' },
     { id: 'd4', name: 'Word Clock' },
